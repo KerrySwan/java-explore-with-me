@@ -1,11 +1,16 @@
 package ru.practicum.explore.commons.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 public class Location {
 
-    int lon;
-    int lat;
+    float lon;
+    float lat;
 
 }

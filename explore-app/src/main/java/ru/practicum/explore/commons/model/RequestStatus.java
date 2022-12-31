@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity(name = "request_status")
 @NoArgsConstructor
-@Table(name = "request_state")
+@Table(name = "request_status")
 @Getter
 @Setter
 @Builder

@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             value =
                     "SELECT " +
                             "* " +
-                    "FROM user " +
+                    "FROM \"user\" " +
                     "WHERE id in (:ids)"
     )
     List<User> findAllById(Iterable<Long> ids, Pageable p);

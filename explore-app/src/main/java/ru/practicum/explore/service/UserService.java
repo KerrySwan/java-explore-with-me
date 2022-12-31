@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserDto> getUsers(List<Long> id, int from, int size);
+    List<UserDto> getUsers(List<Long> ids, int from, int size);
 
     UserDto addUser(UserDto dto);
 

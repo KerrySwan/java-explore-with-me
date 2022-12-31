@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explore.commons.dto.UserDto;
+import ru.practicum.explore.commons.error.InvalidIdException;
 import ru.practicum.explore.commons.mapper.UserMapper;
 import ru.practicum.explore.commons.model.User;
 import ru.practicum.explore.repository.UserRepository;
@@ -21,8 +22,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public List<UserDto> getUsers(List<Long> id, int from, int size) {
-        List<User> u = userRepository.findAllById(id, PageRequest.of((from / size), size));
+    public List<UserDto> getUsers(List<Long> ids, int from, int size){
+        List<User> u = userRepository.findAllById(ids, PageRequest.of((from / size), size));
         return u.stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());

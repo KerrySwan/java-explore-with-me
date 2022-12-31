@@ -31,6 +31,7 @@ public class PersistenceConfig {
         properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.hibernate.dialect"));
         properties.put("hibernate.format_sql", environment.getRequiredProperty("spring.jpa.hibernate.format_sql"));
         properties.put("hibernate.show_sql", environment.getProperty("spring.jpa.hibernate.show_sql", "false"));
+        properties.put("hibernate.globally_quoted_identifiers", environment.getRequiredProperty("spring.jpa.properties.hibernate.globally_quoted_identifiers"));
         properties.put("hibernate.ddl-auto", environment.getRequiredProperty("spring.jpa.hibernate.ddl-auto"));
         properties.put("javax.persistence.schema-generation.database.action",
                 environment.getProperty("javax.persistence.schema-generation.database.action", "none"));
