@@ -10,7 +10,7 @@ import ru.practicum.explore.commons.model.User;
 import java.util.List;
 
 @Repository
-public interface EventRepository extends JpaRepository<User, Long> {
+public interface EventRepository extends JpaRepository<Event, Long> {
 
     public List<Event> findAllByUserId(long userId, Pageable p);
 

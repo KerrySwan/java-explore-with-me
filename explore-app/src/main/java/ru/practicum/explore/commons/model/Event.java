@@ -40,7 +40,11 @@ public class Event {
     long participantLimit;
     LocalDateTime publishedOn;
     boolean requestModeration;
-    String state;
+    @JoinColumn(
+            name = "state_id",
+            referencedColumnName = "id"
+    )
+    EventState state;
     String title;
 
 }
