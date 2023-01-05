@@ -2,17 +2,13 @@ package ru.practicum.explore.service;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.explore.commons.dto.EventFullDto;
-import ru.practicum.explore.commons.dto.NewEventDto;
-import ru.practicum.explore.commons.dto.ParticipationRequestDto;
-import ru.practicum.explore.commons.dto.UpdateEventRequestDto;
-import ru.practicum.explore.commons.error.EntitiesNotConnectedException;
+import ru.practicum.explore.commons.dto.*;
 import ru.practicum.explore.commons.mapper.EventMapper;
+import ru.practicum.explore.commons.mapper.RequestMapper;
 import ru.practicum.explore.commons.model.Event;
+import ru.practicum.explore.commons.model.Request;
 import ru.practicum.explore.commons.model.User;
-import ru.practicum.explore.repository.EventRepository;
-import ru.practicum.explore.repository.StateRepository;
-import ru.practicum.explore.repository.UserRepository;
+import ru.practicum.explore.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,14 +19,17 @@ public class EventServiceImpl implements EventService {
 
     EventRepository eventRepository;
     UserRepository userRepository;
+    RequestRepository requestRepository;
     StateRepository stateRepository;
+    StatusRepository statusRepository;
 
+    //Private
     @Override
-    public List<EventFullDto> getEventsByUser(long userId, int from, int size) {
+    public List<EventShortDto> getEventsByUser(long userId, int from, int size) {
         return eventRepository
                 .findAllByUserId(userId, PageRequest.of((from / size), size))
                 .stream()
-                .map(EventMapper::toFullDto)
+                .map(EventMapper::toShortDto)
                 .collect(Collectors.toList());
     }
 
@@ -53,6 +52,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getEventByUser(long userId, long eventId) {
+        getUserOrThrow(userId);
         return EventMapper.toFullDto(
                 getOrThrowIfNotInitiator(eventId, userId)
         );
@@ -60,6 +60,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto cancelEventByUser(long userId, long eventId) {
+        getUserOrThrow(userId);
         Event e = getOrThrowIfNotInitiator(eventId, userId);
         e.setState(stateRepository.getById(3L));
         e = eventRepository.save(e);
@@ -68,40 +69,57 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<ParticipationRequestDto> getRequestsByUser(long userId, long eventId) {
-        return null;
+        return requestRepository
+                .findAllByUserIdAndEventId(userId, eventId)
+                .stream()
+                .map(RequestMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ParticipationRequestDto confirmRequest(long userId, long eventId, long reqId) {
-        return null;
+        getUserOrThrow(userId);
+        getEventOrThrow(eventId);
+        //нельзя если отклонено
+        Request r = requestRepository.getByIdAndUserIdAndEventId(reqId, userId, eventId);
+        if (r.getStatus().equals(statusRepository.getById(3L))) throw ConditionsNotFulfiledException;
+        r.setStatus(statusRepository.getById(2L));
+        return RequestMapper.toDto(r);
     }
 
     @Override
     public ParticipationRequestDto rejectRequest(long userId, long eventId, long reqId) {
-        return null;
+        getUserOrThrow(userId);
+        getEventOrThrow(eventId);
+        Request r = requestRepository.getByIdAndUserIdAndEventId(reqId, userId, eventId);
+        r.setStatus(statusRepository.getById(3L));
+        return RequestMapper.toDto(r);
     }
 
+    //Объект не найден 404
     private User getUserOrThrow(long userId) throws EntityNotFoundException {
         try {
             return userRepository.getById(userId);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(String.format("Пользователь ID=%d не существует", userId));
         }
     }
 
+    //Объект не найден 404
     private Event getEventOrThrow(long eventId) throws EntityNotFoundException {
         try {
             return eventRepository.getById(eventId);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(String.format("Событие ID=%d не существует", eventId));
         }
     }
 
-    private Event getOrThrowIfNotInitiator(long eventId, long userId) throws EntitiesNotConnectedException {
+    //Объект не найден 404
+    private Event getOrThrowIfNotInitiator(long eventId, long userId) throws EntityNotFoundException {
         Event e = eventRepository.getByIdAndUserId(eventId, userId);
         if (e == null) {
-            throw new EntitiesNotConnectedException(
-                String.format("Пользователь ID=%d не является инициатором события ID=%d", userId, eventId)
+            throw new EntityNotFoundException(
+                    String.format("Пользователь ID=%d не является инициатором события ID=%d", userId, eventId)
             );
         }
         return e;

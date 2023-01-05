@@ -25,7 +25,7 @@ public class EventMapper {
                 .participantLimit(dto.getParticipantLimit())
                 .publishedOn(dto.getPublishedOn())
                 .requestModeration(dto.isRequestModeration())
-                .state(dto.getState())
+                //.state(dto.getState())
                 .title(dto.getTitle())
                 .build();
     };
@@ -83,7 +83,7 @@ public class EventMapper {
                 .participantLimit(model.getParticipantLimit())
                 .publishedOn(model.getPublishedOn())
                 .requestModeration(model.isRequestModeration())
-                .state(model.getState())
+                .state(model.getState().getName())
                 .title(model.getTitle())
                 .build();
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
@@ -23,6 +24,12 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     protected Object handleInvalidIdException(ConstraintViolationException ex) {
         return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.FORBIDDEN, LocalDateTime.now());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected Object handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ApiError(ex, "Объект не найден", HttpStatus.NOT_FOUND, LocalDateTime.now());
     }
 
 }
