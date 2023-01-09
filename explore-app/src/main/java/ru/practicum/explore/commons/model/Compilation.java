@@ -3,6 +3,7 @@ package ru.practicum.explore.commons.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -16,12 +17,8 @@ public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @ManyToOne()
-    @JoinColumn(
-            name = "event_id",
-            referencedColumnName = "id"
-    )
-    Event event;
+    @OneToMany(fetch = FetchType.EAGER)
+    List<Event> events;
     @ManyToOne()
     @JoinColumn(
             name = "user_id",

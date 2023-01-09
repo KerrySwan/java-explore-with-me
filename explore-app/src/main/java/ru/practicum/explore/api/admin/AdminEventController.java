@@ -5,6 +5,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.AdminUpdateEventRequestDto;
 import ru.practicum.explore.commons.dto.EventFullDto;
+import ru.practicum.explore.commons.dto.UpdateEventRequestDto;
+import ru.practicum.explore.service.EventService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping("/admin/events")
 public class AdminEventController {
 
+    private final EventService eventService;
+
     @GetMapping()
     public List<EventFullDto> findEvent(@RequestParam List<Long> users,
                                         @RequestParam List<String> states,
@@ -23,22 +27,22 @@ public class AdminEventController {
                                         @RequestParam LocalDateTime rangeEnd,
                                         @RequestParam(required = false, defaultValue = "0") int from,
                                         @RequestParam(required = false, defaultValue = "0") int size) {
-        return null;
+        return eventService.findAllByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PutMapping(path = "/{eventId}")
-    public AdminUpdateEventRequestDto updateEvent(@PathVariable long eventId){
-        return null;
+    public EventFullDto updateEvent(@PathVariable long eventId, @RequestBody UpdateEventRequestDto dto){
+        return eventService.updateEventByAdmin(eventId, dto);
     }
 
     @PatchMapping(path = "/{eventId}/publish")
     public EventFullDto publishEvent(@PathVariable long eventId){
-        return null;
+        return eventService.publish(eventId);
     }
 
     @PatchMapping(path = "/{eventId}/reject")
     public EventFullDto rejectEvent(@PathVariable long eventId){
-        return null;
+        return eventService.reject(eventId);
     }
 
 }

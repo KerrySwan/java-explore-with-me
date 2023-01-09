@@ -50,9 +50,9 @@ public class EventMapper {
                 .eventDate(dto.getEventDate())
                 .locationLat(dto.getLocation().getLat())
                 .locationLon(dto.getLocation().getLon())
-                .paid(dto.isPaid())
+                .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
-                .requestModeration(dto.isRequestModeration())
+                .requestModeration(dto.getRequestModeration())
                 .title(dto.getTitle())
                 .build();
     };
@@ -62,7 +62,7 @@ public class EventMapper {
                 .annotation(dto.getAnnotation())
                 .description(dto.getDescription())
                 .eventDate(dto.getEventDate())
-                .paid(dto.isPaid())
+                .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
                 .title(dto.getTitle())
                 .build();

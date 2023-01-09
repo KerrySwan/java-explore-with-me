@@ -27,7 +27,8 @@ public class EventFullDto {
     boolean requestModeration;
     String state;
     String title;
-    long views;
+    @Builder.Default
+    private Long views = 0L;
 
 
 }

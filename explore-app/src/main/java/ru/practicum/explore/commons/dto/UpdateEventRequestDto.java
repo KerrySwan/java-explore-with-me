@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 public class UpdateEventRequestDto {
 
     String annotation;
-    long categoryId;
+    Long categoryId;
     String description;
     LocalDateTime eventDate;
-    long eventId;
-    boolean paid;
-    long participantLimit;
+    Long eventId;
+    Boolean paid;
+    Long participantLimit;
     String title;
 
 }

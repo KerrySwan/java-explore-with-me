@@ -19,6 +19,7 @@ public class EventShortDto {
     UserShortDto initiator;
     boolean paid;
     String title;
-    long views;
+    @Builder.Default
+    private Long views = 0L;
 
 }

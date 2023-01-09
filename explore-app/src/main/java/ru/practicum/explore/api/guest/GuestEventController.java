@@ -4,7 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.EventFullDto;
+import ru.practicum.explore.commons.dto.EventShortDto;
+import ru.practicum.explore.service.EventService;
+import ru.practicum.explore.service.HitService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,22 +20,29 @@ import java.util.List;
 @RequestMapping("/events")
 public class GuestEventController {
 
+    private final EventService eventService;
+    private final HitService hitService;
+
     @GetMapping
-    public List<EventFullDto> getEvents(@RequestParam String text,
-                                        @RequestParam List<Long> categories,
-                                        @RequestParam boolean paid,
-                                        @RequestParam LocalDateTime rangeStart,
-                                        @RequestParam LocalDateTime rangeEnd,
-                                        @RequestParam(required = false, defaultValue = "false") boolean onlyAvailable,
-                                        @RequestParam(required = false) String sort,
-                                        @RequestParam(required = false, defaultValue = "0") int from,
-                                        @RequestParam(required = false, defaultValue = "0") int size) {
-        return null;
+    public List<EventShortDto> getEvents(HttpServletRequest request,
+                                         @RequestParam String text,
+                                         @RequestParam List<Long> categories,
+                                         @RequestParam boolean paid,
+                                         @RequestParam LocalDateTime rangeStart,
+                                         @RequestParam LocalDateTime rangeEnd,
+                                         @RequestParam(required = false, defaultValue = "false") boolean onlyAvailable,
+                                         @RequestParam(required = false) String sort,
+                                         @RequestParam(required = false, defaultValue = "0") int from,
+                                         @RequestParam(required = false, defaultValue = "0") int size) throws URISyntaxException, IOException, InterruptedException {
+        List<EventShortDto> dtoList = eventService.findAllWithFiltration(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        return hitService.getView(request, dtoList);
     }
 
     @GetMapping(path = "/{id}")
-    public EventFullDto getEvent(@PathVariable long id) {
-        return null;
+    public EventFullDto getEvent(HttpServletRequest request,
+                                 @PathVariable long id) throws URISyntaxException, IOException, InterruptedException {
+        EventFullDto dto = eventService.getByEventId(id);
+        return hitService.getView(request, dto);
     }
 
 }

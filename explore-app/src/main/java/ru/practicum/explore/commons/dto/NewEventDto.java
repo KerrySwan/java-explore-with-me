@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 public class NewEventDto {
 
     String annotation;
-    long categoryId;
+    Long categoryId;
     String description;
     LocalDateTime eventDate;
     Location location;
-    boolean paid;
-    long participantLimit;
-    boolean requestModeration;
+    Boolean paid;
+    Long participantLimit;
+    Boolean requestModeration;
     String title;
 
 }

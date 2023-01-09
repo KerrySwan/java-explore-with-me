@@ -37,6 +37,7 @@ CREATE TABLE "event" (
   "request_moderation" boolean,
   "state_id" bigint,
   "title" varchar(255),
+  "views" bigint,
   PRIMARY KEY ("id")
 );
 

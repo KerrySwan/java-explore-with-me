@@ -40,6 +40,7 @@ public class Event {
     long participantLimit;
     LocalDateTime publishedOn;
     boolean requestModeration;
+    @ManyToOne
     @JoinColumn(
             name = "state_id",
             referencedColumnName = "id"

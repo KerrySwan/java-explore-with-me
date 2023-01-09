@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.ParticipationRequestDto;
+import ru.practicum.explore.service.RequestService;
 
 import java.util.List;
 
@@ -13,21 +14,23 @@ import java.util.List;
 @RequestMapping("/user/{userId}/requests")
 public class UserRequestController {
 
+    private final RequestService requestService;
+
     @GetMapping
     public List<ParticipationRequestDto> getRequests(@PathVariable long userId){
-        return null;
+        return requestService.getRequestsByUserId(userId);
     }
 
     @PostMapping
     public ParticipationRequestDto sendRequest(@PathVariable long userId,
                                                @RequestParam long eventId){
-        return null;
+        return requestService.addParticipationRequest(userId, eventId);
     }
 
     @PatchMapping(path = "/{requestId}/cancel")
     public ParticipationRequestDto cancelRequest(@PathVariable long userId,
                                                  @PathVariable long requestId) {
-        return null;
+        return requestService.cancelRequestByUser(userId, requestId);
     }
 
 }
