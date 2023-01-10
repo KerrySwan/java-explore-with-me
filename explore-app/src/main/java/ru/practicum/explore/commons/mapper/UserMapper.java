@@ -6,7 +6,7 @@ import ru.practicum.explore.commons.model.User;
 
 public class UserMapper {
 
-    static public UserDto toDto(User model){
+    static public UserDto toDto(User model) {
         return UserDto.builder()
                 .id(model.getId())
                 .email(model.getEmail())
@@ -14,14 +14,14 @@ public class UserMapper {
                 .build();
     }
 
-    static public UserShortDto toShortDto(User model){
+    static public UserShortDto toShortDto(User model) {
         return UserShortDto.builder()
                 .id(model.getId())
                 .name(model.getName())
                 .build();
     }
 
-    static public User toModel(UserDto dto){
+    static public User toModel(UserDto dto) {
         return User.builder()
                 .id(dto.getId())
                 .email(dto.getEmail())
@@ -29,7 +29,7 @@ public class UserMapper {
                 .build();
     }
 
-    static public User toModel(UserShortDto dto){
+    static public User toModel(UserShortDto dto) {
         return User.builder()
                 .id(dto.getId())
                 .name(dto.getName())

@@ -1,6 +1,7 @@
 package ru.practicum.explore.commons.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity

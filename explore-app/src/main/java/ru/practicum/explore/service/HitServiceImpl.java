@@ -3,9 +3,7 @@ package ru.practicum.explore.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.practicum.explore.commons.dto.EndpointHitDto;
@@ -28,7 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class HitServiceImpl implements HitService{
+public class HitServiceImpl implements HitService {
 
     @Value("${stats-server.url}")
     private String serverUrl;
@@ -40,7 +38,7 @@ public class HitServiceImpl implements HitService{
 
 
     @Override
-    public void addHit(HttpServletRequest req) throws URISyntaxException, JsonProcessingException{
+    public void addHit(HttpServletRequest req) throws URISyntaxException, JsonProcessingException {
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
                 .app("ewm-main-service")
                 .uri(req.getRequestURL().toString())
@@ -48,7 +46,9 @@ public class HitServiceImpl implements HitService{
                 .ip(req.getRemoteAddr())
                 .build();
         sendHit(endpointHitDto);
-    };
+    }
+
+    ;
 
     private void addHit(HttpServletRequest request, List<String> url) throws JsonProcessingException, URISyntaxException {
         List<EndpointHitDto> statsHitDtoList = url.stream()
@@ -66,7 +66,7 @@ public class HitServiceImpl implements HitService{
 
 
     @Override
-    public EventFullDto getView(HttpServletRequest req, EventFullDto dto) throws URISyntaxException, IOException, InterruptedException{
+    public EventFullDto getView(HttpServletRequest req, EventFullDto dto) throws URISyntaxException, IOException, InterruptedException {
         List<String> url = List.of("/events/" + dto.getId());
         List<ViewStatsDto> statsViewDto = getStats(url);
         Long view = (statsViewDto.size() != 0) ? statsViewDto.get(0).getHits() : 0L;
@@ -76,7 +76,7 @@ public class HitServiceImpl implements HitService{
     }
 
     @Override
-    public List<EventShortDto> getView(HttpServletRequest req, List<EventShortDto> dtos) throws URISyntaxException, IOException, InterruptedException{
+    public List<EventShortDto> getView(HttpServletRequest req, List<EventShortDto> dtos) throws URISyntaxException, IOException, InterruptedException {
         List<String> url = dtos.stream()
                 .map(el -> "/events/" + el.getId())
                 .collect(Collectors.toList());
@@ -90,7 +90,9 @@ public class HitServiceImpl implements HitService{
         });
         addHit(req, url);
         return dtos;
-    };
+    }
+
+    ;
 
     private void sendHit(EndpointHitDto endpointHitDto) throws JsonProcessingException, URISyntaxException {
         String requestBody = objectMapper

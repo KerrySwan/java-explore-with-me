@@ -9,7 +9,7 @@ import ru.practicum.explore.commons.model.Location;
 
 public class EventMapper {
 
-    public static Event toModel(EventFullDto dto){
+    public static Event toModel(EventFullDto dto) {
         return Event.builder()
                 .id(dto.getId())
                 .annotation(dto.getAnnotation())
@@ -28,9 +28,11 @@ public class EventMapper {
                 //.state(dto.getState())
                 .title(dto.getTitle())
                 .build();
-    };
+    }
 
-    public static Event toModel(EventShortDto dto){
+    ;
+
+    public static Event toModel(EventShortDto dto) {
         return Event.builder()
                 .id(dto.getId())
                 .annotation(dto.getAnnotation())
@@ -41,9 +43,11 @@ public class EventMapper {
                 .paid(dto.isPaid())
                 .title(dto.getTitle())
                 .build();
-    };
+    }
 
-    public static Event toModel(NewEventDto dto){
+    ;
+
+    public static Event toModel(NewEventDto dto) {
         return Event.builder()
                 .annotation(dto.getAnnotation())
                 .description(dto.getDescription())
@@ -55,9 +59,11 @@ public class EventMapper {
                 .requestModeration(dto.getRequestModeration())
                 .title(dto.getTitle())
                 .build();
-    };
+    }
 
-    public static Event toModel(UpdateEventRequestDto dto){
+    ;
+
+    public static Event toModel(UpdateEventRequestDto dto) {
         return Event.builder()
                 .annotation(dto.getAnnotation())
                 .description(dto.getDescription())
@@ -68,7 +74,7 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventFullDto toFullDto(Event model){
+    public static EventFullDto toFullDto(Event model) {
         return EventFullDto.builder()
                 .id(model.getId())
                 .annotation(model.getAnnotation())
@@ -88,7 +94,7 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventShortDto toShortDto(Event model){
+    public static EventShortDto toShortDto(Event model) {
         return null;
     }
 

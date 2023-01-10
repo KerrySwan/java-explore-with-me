@@ -1,6 +1,5 @@
 package ru.practicum.explore.commons.error;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

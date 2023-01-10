@@ -6,12 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.explore.commons.model.Event;
-import ru.practicum.explore.commons.model.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -41,12 +38,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             nativeQuery = true,
             value =
                     "Select * " +
-                    "from event " +
-                    "where user_id in :users " +
-                    "  and state in :states " +
-                    "  and category_id in :categories" +
-                    "  and event_date > :rangeStart " +
-                    "  and event_date < :rangeEnd"
+                            "from event " +
+                            "where user_id in :users " +
+                            "  and state in :states " +
+                            "  and category_id in :categories" +
+                            "  and event_date > :rangeStart " +
+                            "  and event_date < :rangeEnd"
 
     )
     public Page<Event> findAllByAdmin(List<Long> users, List<String> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable p);

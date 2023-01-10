@@ -3,7 +3,6 @@ package ru.practicum.explore.api.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.explore.commons.dto.AdminUpdateEventRequestDto;
 import ru.practicum.explore.commons.dto.EventFullDto;
 import ru.practicum.explore.commons.dto.UpdateEventRequestDto;
 import ru.practicum.explore.service.EventService;
@@ -31,17 +30,17 @@ public class AdminEventController {
     }
 
     @PutMapping(path = "/{eventId}")
-    public EventFullDto updateEvent(@PathVariable long eventId, @RequestBody UpdateEventRequestDto dto){
+    public EventFullDto updateEvent(@PathVariable long eventId, @RequestBody UpdateEventRequestDto dto) {
         return eventService.updateEventByAdmin(eventId, dto);
     }
 
     @PatchMapping(path = "/{eventId}/publish")
-    public EventFullDto publishEvent(@PathVariable long eventId){
+    public EventFullDto publishEvent(@PathVariable long eventId) {
         return eventService.publish(eventId);
     }
 
     @PatchMapping(path = "/{eventId}/reject")
-    public EventFullDto rejectEvent(@PathVariable long eventId){
+    public EventFullDto rejectEvent(@PathVariable long eventId) {
         return eventService.reject(eventId);
     }
 

@@ -1,7 +1,6 @@
 package ru.practicum.explore.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -14,7 +13,6 @@ import ru.practicum.explore.commons.model.RequestStatus;
 import ru.practicum.explore.commons.model.User;
 import ru.practicum.explore.repository.EventRepository;
 import ru.practicum.explore.repository.RequestRepository;
-import ru.practicum.explore.repository.StatusRepository;
 import ru.practicum.explore.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -80,7 +78,7 @@ public class RequestServiceImpl implements RequestService {
                     String.format("Связка requestId = %d и userId = %d не найдена", requestId, userId)
             );
         }
-        if (r.getStatus().getId() == 2L){
+        if (r.getStatus().getId() == 2L) {
             Event e = eventRepository.getById(r.getEvent().getId());
             e.setConfirmedRequests(e.getConfirmedRequests() - 1L);
             eventRepository.save(e);

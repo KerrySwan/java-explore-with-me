@@ -15,6 +15,7 @@ import java.util.List;
 public class UserEventController {
 
     private final EventService eventService;
+
     @GetMapping
     public List<EventShortDto> getEvents(@PathVariable long userId,
                                          @RequestParam(required = false, defaultValue = "0") int from,
@@ -30,7 +31,7 @@ public class UserEventController {
 
     @PostMapping
     public EventFullDto addEvent(@PathVariable long userId,
-                                       @RequestBody NewEventDto dto) {
+                                 @RequestBody NewEventDto dto) {
         return eventService.addEventByUser(userId, dto);
     }
 
@@ -61,8 +62,8 @@ public class UserEventController {
 
     @PatchMapping(path = "/{eventId}/requests/{reqId}/reject")
     public ParticipationRequestDto rejectEventRequestByReqId(@PathVariable long userId,
-                                                              @PathVariable long eventId,
-                                                              @PathVariable long reqId) {
+                                                             @PathVariable long eventId,
+                                                             @PathVariable long reqId) {
         return eventService.rejectRequest(userId, eventId, reqId);
     }
 

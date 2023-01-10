@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.stat.commons.dto.EndpointHitDto;
 import ru.practicum.stat.commons.dto.ViewStatsDto;
 import ru.practicum.stat.commons.mapper.EndpointHitMapper;
 import ru.practicum.stat.commons.model.EndpointHit;
 import ru.practicum.stat.repository.HitRepository;
-import ru.practicum.stat.commons.dto.EndpointHitDto;
-
 
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class HitServiceImpl implements HitService{
+public class HitServiceImpl implements HitService {
 
     private final HitRepository hitRepository;
 

@@ -17,13 +17,13 @@ public class UserRequestController {
     private final RequestService requestService;
 
     @GetMapping
-    public List<ParticipationRequestDto> getRequests(@PathVariable long userId){
+    public List<ParticipationRequestDto> getRequests(@PathVariable long userId) {
         return requestService.getRequestsByUserId(userId);
     }
 
     @PostMapping
     public ParticipationRequestDto sendRequest(@PathVariable long userId,
-                                               @RequestParam long eventId){
+                                               @RequestParam long eventId) {
         return requestService.addParticipationRequest(userId, eventId);
     }
 

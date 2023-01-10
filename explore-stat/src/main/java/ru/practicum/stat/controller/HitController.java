@@ -24,7 +24,7 @@ public class HitController {
     public List<ViewStatsDto> getStats(
             @RequestParam String start,
             @RequestParam String end,
-            @RequestParam(required = false) List<String> uri, 
+            @RequestParam(required = false) List<String> uri,
             @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         return hitService.getView(start, end, uri, unique);
     }

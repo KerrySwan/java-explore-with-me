@@ -20,8 +20,8 @@ public class Event {
     String annotation;
     @ManyToOne()
     @JoinColumn(
-        name = "category_id",
-        referencedColumnName = "id"
+            name = "category_id",
+            referencedColumnName = "id"
     )
     Category category;
     long confirmedRequests;

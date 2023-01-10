@@ -1,7 +1,6 @@
 package ru.practicum.explore.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsers(List<Long> ids, int from, int size) {
         for (Long id : ids) {
-            if (id<=0) throw new InvalidIdException("Переданное значние id меньше или равно нулю. ID = " + id);
+            if (id <= 0) throw new InvalidIdException("Переданное значние id меньше или равно нулю. ID = " + id);
         }
         List<User> u = userRepository.findAllById(ids, PageRequest.of((from / size), size));
         return u.stream()
