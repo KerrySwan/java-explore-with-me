@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.stat.commons.dto.EndpointHitDto;
 import ru.practicum.stat.commons.dto.ViewStatsDto;
-import ru.practicum.stat.controller.service.HitService;
+import ru.practicum.stat.service.HitService;
 
 import javax.validation.Valid;
 import java.util.List;

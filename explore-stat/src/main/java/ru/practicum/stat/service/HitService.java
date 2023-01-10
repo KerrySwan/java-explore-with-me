@@ -1,4 +1,4 @@
-package ru.practicum.stat.controller.service;
+package ru.practicum.stat.service;
 
 import ru.practicum.stat.commons.dto.EndpointHitDto;
 import ru.practicum.stat.commons.dto.ViewStatsDto;

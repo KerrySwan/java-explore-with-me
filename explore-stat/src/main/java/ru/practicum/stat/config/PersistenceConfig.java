@@ -1,4 +1,4 @@
-package ru.practicum.explore.config;
+package ru.practicum.stat.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "ru.practicum.explore")
+@EnableJpaRepositories(basePackages = "ru.practicum.stat")
 @PropertySource(value = "classpath:application.properties")
 public class PersistenceConfig {
     private final Environment environment;
@@ -28,10 +28,9 @@ public class PersistenceConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.hibernate.dialect"));
-        properties.put("hibernate.format_sql", environment.getRequiredProperty("spring.jpa.hibernate.format_sql"));
-        properties.put("hibernate.show_sql", environment.getProperty("spring.jpa.hibernate.show_sql", "false"));
-        properties.put("hibernate.globally_quoted_identifiers", environment.getRequiredProperty("spring.jpa.properties.hibernate.globally_quoted_identifiers"));
+        properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.properties.hibernate.dialect"));
+        properties.put("hibernate.format_sql", environment.getRequiredProperty("spring.jpa.properties.hibernate.format_sql"));
+        properties.put("hibernate.show_sql", environment.getProperty("spring.jpa.properties.hibernate.show_sql", "false"));
         properties.put("hibernate.ddl-auto", environment.getRequiredProperty("spring.jpa.hibernate.ddl-auto"));
         properties.put("javax.persistence.schema-generation.database.action",
                 environment.getProperty("javax.persistence.schema-generation.database.action", "none"));
@@ -54,7 +53,7 @@ public class PersistenceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         final LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
-        emf.setPackagesToScan("ru.practicum.explore");
+        emf.setPackagesToScan("ru.practicum.stat");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emf.setJpaVendorAdapter(vendorAdapter);
