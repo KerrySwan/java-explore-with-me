@@ -40,7 +40,7 @@ public class HitServiceImpl implements HitService {
     @Override
     public void addHit(HttpServletRequest req) throws URISyntaxException, JsonProcessingException {
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-                .app("ewm-main-service")
+                .app("explore-main-service")
                 .uri(req.getRequestURL().toString())
                 .timestamp(LocalDateTime.now())
                 .ip(req.getRemoteAddr())
@@ -53,7 +53,7 @@ public class HitServiceImpl implements HitService {
     private void addHit(HttpServletRequest request, List<String> url) throws JsonProcessingException, URISyntaxException {
         List<EndpointHitDto> statsHitDtoList = url.stream()
                 .map(uri -> EndpointHitDto.builder()
-                        .app("ewm-main-service")
+                        .app("explore-main-service")
                         .uri(uri)
                         .timestamp(LocalDateTime.now())
                         .ip(request.getRemoteAddr())
