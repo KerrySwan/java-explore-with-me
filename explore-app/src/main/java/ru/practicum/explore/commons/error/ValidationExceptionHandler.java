@@ -26,8 +26,8 @@ public class ValidationExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    protected ApiError handleInvalidIdException(ConstraintViolationException ex) {
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ApiError handleConstraintViolation(ConstraintViolationException ex) {
         return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.FORBIDDEN, LocalDateTime.now());
     }
 
@@ -39,7 +39,7 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleEntityNotFoundException(Exception ex) {
+    protected ApiError handleBadRequestException(Exception ex) {
         return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.BAD_REQUEST, LocalDateTime.now());
     }
 

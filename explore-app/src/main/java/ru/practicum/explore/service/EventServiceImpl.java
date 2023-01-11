@@ -2,7 +2,6 @@ package ru.practicum.explore.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,7 +21,6 @@ import ru.practicum.explore.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -216,14 +214,21 @@ public class EventServiceImpl implements EventService {
                                              String rangeEnd,
                                              int from,
                                              int size) {
-        Page<Event> events = eventRepository.findAllByAdmin(
-                users,
-                states,
-                categories,
-                LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf),
-                LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf),
-                PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"))
-        );
+        LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf);
+        LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, JacksonConfiguration.dtf);
+        List<EventState> stateList = stateRepository.findAllByNames(states);
+        Page<Event> events = eventRepository.findAll((root, query, criteriaBuilder) ->
+                        criteriaBuilder.and(
+                                (users != null) ? root.get("user").in(users) : root.isNotNull(),
+                                (states != null) ? root.get("state").in(stateList) : root.isNotNull(),
+                                (categories != null) ? root.get("category").in(categories) : root.isNotNull(),
+                                (start != null && end != null) ?
+                                        criteriaBuilder.and(
+                                                criteriaBuilder.greaterThan(root.get("eventDate"), start),
+                                                criteriaBuilder.lessThan(root.get("eventDate"), end)
+                                        ) : criteriaBuilder.lessThan(root.get("eventDate"), LocalDateTime.now())
+                        ),
+                PageRequest.of(from/size, size, Sort.by(Sort.Direction.ASC, "id")));
         return events.stream()
                 .map(EventMapper::toFullDto)
                 .collect(Collectors.toList());
@@ -290,7 +295,7 @@ public class EventServiceImpl implements EventService {
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 
-    private Event updateEvent(Event e, UpdateEventRequestDto dto){
+    private Event updateEvent(Event e, UpdateEventRequestDto dto) {
         if (dto.getAnnotation() != null) e.setAnnotation(dto.getAnnotation());
         if (dto.getCategoryId() != null) e.setCategory(categoryRepository.getById(dto.getCategoryId()));
         if (dto.getDescription() != null) e.setDescription(dto.getDescription());

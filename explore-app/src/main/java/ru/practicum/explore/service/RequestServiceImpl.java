@@ -52,7 +52,7 @@ public class RequestServiceImpl implements RequestService {
             );
         }
         try {
-            e = eventRepository.getByIdAndUserId(eventId, userId);
+            e = eventRepository.getById(eventId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(
                     String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId)

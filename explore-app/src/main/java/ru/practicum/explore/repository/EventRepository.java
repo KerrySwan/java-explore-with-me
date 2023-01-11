@@ -22,23 +22,6 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value =
                     "Select e " +
                     "from Event e " +
-                    "where (:categories is null or e.category.id in :categories)" +
-                    "  and (:isPaid is null or e.paid = :isPaid)" +
-                    "  and (cast(:rangeStart as date) is null or e.eventDate > :rangeStart) " +
-                    "  and (cast(:rangeEnd as date) is null or e.eventDate < :rangeEnd)" +
-                    "  and " +
-                    "  (:isAvailable is null or " +
-                        "(:isAvailable = true and e.participantLimit <> e.confirmedRequests) or " +
-                        "(:isAvailable = false and e.participantLimit = e.confirmedRequests) " +
-                       ")" +
-                    "  and (:text is null or e.annotation like :text or e.description like :text)"
-    )
-    public Page<Event> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean isAvailable, Pageable p);
-
-    @Query(
-            value =
-                    "Select e " +
-                    "from Event e " +
                     "where (:users is null or e.user.id in :users) " +
                     "  and (:states is null or e.state.name in (:states)) " +
                     "  and (:categories is null or e.category.id in :categories)" +
