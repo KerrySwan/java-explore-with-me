@@ -40,7 +40,7 @@ public class EventServiceImpl implements EventService {
      **/
 
     @Override
-    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, LocalDateTime start, LocalDateTime end, Boolean isAvailable, String sort, int from, int size) {
+    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, String rangeStart, String rangeEnd, Boolean isAvailable, String sort, int from, int size) {
         Sort sorting;
         if (sort == null)
             sorting = Sort.by(Sort.Direction.ASC, "id");
@@ -50,6 +50,8 @@ public class EventServiceImpl implements EventService {
             sorting = Sort.by(Sort.Direction.ASC, "views");
         else
             sorting = Sort.by(Sort.Direction.ASC, "id");
+        LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf);
+        LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, JacksonConfiguration.dtf);
         Page<Event> events = eventRepository.findAll((root, query, criteriaBuilder) ->
                         criteriaBuilder.and(
                                 criteriaBuilder.equal(root.get("state"), new EventState(2, "PUBLISHED")),
@@ -168,9 +170,15 @@ public class EventServiceImpl implements EventService {
     public ParticipationRequestDto confirmRequest(long userId, long eventId, long reqId) {
         Request r;
         try {
+            eventRepository.getByIdAndUserId(eventId, userId);
+        }  catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId));
+        }
+        try {
+
             r = requestRepository.getByIdAndUserIdAndEventId(reqId, userId, eventId);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Связка eventId = %d, userId = %d и requestId = %d не найдена", eventId, userId, reqId));
+            throw new EntityNotFoundException(String.format("Связка eventId = %d и requestId = %d не найдена", eventId, reqId));
         }
         if (r.getStatus().getId() == 3L)
             throw new ConditionsNotFulfilledException("Запрос на участие был отменен ранее");
@@ -186,6 +194,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public ParticipationRequestDto rejectRequest(long userId, long eventId, long reqId) {
         Request r;
+        try {
+            eventRepository.getByIdAndUserId(eventId, userId);
+        }  catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId));
+        }
         try {
             r = requestRepository
                     .getByIdAndUserIdAndEventId(reqId, userId, eventId);

@@ -19,7 +19,7 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     @Column(insertable = false, updatable = false)
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "compilation_event",
             joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")})

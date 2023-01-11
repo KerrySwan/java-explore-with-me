@@ -11,7 +11,7 @@ public interface EventService {
      * Public: События
      **/
 
-    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, LocalDateTime start, LocalDateTime end, Boolean isAvailable, String sort, int from, int size);
+    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, String start, String end, Boolean isAvailable, String sort, int from, int size);
 
     public EventFullDto getByEventId(long eventId);
 

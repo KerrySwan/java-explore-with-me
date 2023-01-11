@@ -9,8 +9,8 @@ public class RequestMapper {
         return ParticipationRequestDto.builder()
                 .id(model.getId())
                 .created(model.getCreatedOn())
-                .eventId(model.getEvent().getId())
-                .requesterId(model.getUser().getId())
+                .event(model.getEvent().getId())
+                .requester(model.getUser().getId())
                 .status(model.getStatus().getName())
                 .build();
     }
