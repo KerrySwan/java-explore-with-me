@@ -15,6 +15,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     public Request getByIdAndUserId(long id, long userId);
 
-    public Request getByIdAndUserIdAndEventId(long id, long userId, long eventId);
+    public Request getByIdAndEventId(long id,  long eventId);
 
 }

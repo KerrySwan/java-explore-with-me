@@ -59,7 +59,8 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
         List<Event> events = compilations.getEvents();
-        events.remove(Event.builder().id(eventId).build());
+        events.removeIf(e -> e.getId() == eventId);
+        compilations.setEvents(events);
         compilationRepository.save(compilations);
     }
 

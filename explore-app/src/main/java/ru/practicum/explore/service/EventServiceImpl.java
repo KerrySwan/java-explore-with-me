@@ -112,7 +112,7 @@ public class EventServiceImpl implements EventService {
         }
         Event e = eventRepository.getByIdAndUserId(dto.getEventId(), userId);
         e = updateEvent(e, dto);
-        e = eventRepository.save(EventMapper.toModel(dto));
+        e = eventRepository.save(e);
         return EventMapper.toFullDto(e);
     }
 
@@ -175,8 +175,7 @@ public class EventServiceImpl implements EventService {
             throw new EntityNotFoundException(String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId));
         }
         try {
-
-            r = requestRepository.getByIdAndUserIdAndEventId(reqId, userId, eventId);
+            r = requestRepository.getByIdAndEventId(reqId, eventId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(String.format("Связка eventId = %d и requestId = %d не найдена", eventId, reqId));
         }
@@ -201,7 +200,7 @@ public class EventServiceImpl implements EventService {
         }
         try {
             r = requestRepository
-                    .getByIdAndUserIdAndEventId(reqId, userId, eventId);
+                    .getByIdAndEventId(reqId, eventId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(String.format("Связка eventId = %d, userId = %d и requestId = %d не найдена", eventId, userId, reqId));
         }
@@ -248,25 +247,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByAdmin(long userId, UpdateEventRequestDto dto) {
-        Event event = eventRepository.findById(dto.getEventId())
+    public EventFullDto updateEventByAdmin(long eventId, UpdateEventRequestDto dto) {
+        Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("eventId = %d не найдено", dto.getEventId())));
-
-        if (event.getUser().getId() != userId) {
-            throw new InvalidIdException("Редактировать может только владелец события ");
-        }
-        if (event.getState().equals("PUBLISHED")) {
-            throw new InvalidIdException("Изменить можно только отмененные события или события в состоянии ожидания модерации");
-        }
-        if (event.getState().equals("CANCELED")) {
-            event.setState(new EventState(1, "PENDING"));
-        }
-
-        event = updateDto(event, dto);
+        event = updateEventWithDto(event, dto);
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 
-    Event updateDto(Event event, UpdateEventRequestDto dto) {
+    Event updateEventWithDto(Event event, UpdateEventRequestDto dto) {
         if (dto.getAnnotation() != null && !dto.getAnnotation().isEmpty()) {
             event.setAnnotation(dto.getAnnotation());
         }

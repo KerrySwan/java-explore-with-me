@@ -18,7 +18,7 @@ public class AdminCompilationController {
     private final CompilationService compilationService;
 
     @PostMapping
-    public CompilationDto addCategory(@Valid @RequestBody NewCompilationDto dto) {
+    public CompilationDto addCompilation(@Valid @RequestBody NewCompilationDto dto) {
         return compilationService.add(dto);
     }
 
