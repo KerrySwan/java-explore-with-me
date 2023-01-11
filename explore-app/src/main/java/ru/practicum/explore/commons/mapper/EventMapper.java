@@ -95,7 +95,16 @@ public class EventMapper {
     }
 
     public static EventShortDto toShortDto(Event model) {
-        return null;
+        return EventShortDto.builder()
+                .id(model.getId())
+                .annotation(model.getAnnotation())
+                .category(CategoryMapper.toDto(model.getCategory()))
+                .confirmedRequests(model.getConfirmedRequests())
+                .eventDate(model.getEventDate())
+                .initiator(UserMapper.toShortDto(model.getUser()))
+                .paid(model.isPaid())
+                .title(model.getTitle())
+                .build();
     }
 
 }

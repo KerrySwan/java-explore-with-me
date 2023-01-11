@@ -11,12 +11,11 @@ import ru.practicum.explore.commons.model.Compilation;
 public interface CompilationRepository extends JpaRepository<Compilation, Long> {
 
     @Query(
-            nativeQuery = true,
             value =
-                    "select * " +
-                            "from compilation " +
-                            "where pinned = :pinned"
+                    "select c " +
+                    "from Compilation c " +
+                    "where (:pinned is null or c.pinned = :pinned)"
     )
-    Page<Compilation> findAllPinned(boolean pinned, Pageable p);
+    Page<Compilation> findAllPinned(Boolean pinned, Pageable p);
 
 }

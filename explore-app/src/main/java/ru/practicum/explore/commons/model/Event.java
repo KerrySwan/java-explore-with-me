@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "event")
+@Entity
 @NoArgsConstructor
 @Table(name = "event")
 @Getter
@@ -24,21 +24,29 @@ public class Event {
             referencedColumnName = "id"
     )
     Category category;
+    @Column(name = "confirmed_requests")
     long confirmedRequests;
+    @Column(name = "created_on")
     LocalDateTime createdOn;
     String description;
+    @Column(name = "event_date")
     LocalDateTime eventDate;
-    @ManyToOne()
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id"
     )
     User user;
+    @Column(name = "location_lat")
     float locationLat;
+    @Column(name = "location_lon")
     float locationLon;
     boolean paid;
+    @Column(name = "participant_limit")
     long participantLimit;
+    @Column(name = "published_on")
     LocalDateTime publishedOn;
+    @Column(name = "request_moderation")
     boolean requestModeration;
     @ManyToOne
     @JoinColumn(

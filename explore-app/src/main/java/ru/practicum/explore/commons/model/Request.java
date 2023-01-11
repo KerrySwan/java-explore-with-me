@@ -35,6 +35,7 @@ public class Request {
             referencedColumnName = "id"
     )
     RequestStatus status;
+    @Column(name = "created_on")
     LocalDateTime createdOn;
 
 }

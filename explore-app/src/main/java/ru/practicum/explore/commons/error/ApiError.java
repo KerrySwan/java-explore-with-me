@@ -23,7 +23,7 @@ public class ApiError {
                         .map(StackTraceElement::toString)
                         .collect(Collectors.toList());
         this.message = message;
-        this.reason = ex.getMessage();
+        this.reason = ex.getLocalizedMessage();
         this.httpStatus = httpStatus;
         this.timestamp = timestamp;
     }

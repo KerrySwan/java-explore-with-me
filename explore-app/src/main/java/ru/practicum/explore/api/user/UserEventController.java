@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/user/{userId}/events")
+@RequestMapping("/users/{userId}/events")
 public class UserEventController {
 
     private final EventService eventService;
@@ -19,7 +19,7 @@ public class UserEventController {
     @GetMapping
     public List<EventShortDto> getEvents(@PathVariable long userId,
                                          @RequestParam(required = false, defaultValue = "0") int from,
-                                         @RequestParam(required = false, defaultValue = "0") int size) {
+                                         @RequestParam(required = false, defaultValue = "10") int size) {
         return eventService.getEventsByUser(userId, from, size);
     }
 

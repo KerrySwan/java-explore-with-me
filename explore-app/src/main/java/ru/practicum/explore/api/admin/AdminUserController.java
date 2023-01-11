@@ -20,9 +20,9 @@ public class AdminUserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getUsers(@RequestParam List<Long> ids,
-                                  @RequestParam(required = false, defaultValue = "0") @PositiveOrZero int from,
-                                  @RequestParam(required = false, defaultValue = "0") @Positive int size) throws InvalidIdException {
+    public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,
+                                  @RequestParam(required = false, defaultValue = "0") int from,
+                                  @RequestParam(required = false, defaultValue = "10") int size) throws InvalidIdException {
         return userService.getUsers(ids, from, size);
     }
 

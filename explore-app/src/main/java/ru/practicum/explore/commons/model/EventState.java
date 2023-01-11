@@ -18,4 +18,7 @@ public class EventState {
     long id;
     String name;
 
+    public EventState(String name) {
+        this.name = name;
+    }
 }

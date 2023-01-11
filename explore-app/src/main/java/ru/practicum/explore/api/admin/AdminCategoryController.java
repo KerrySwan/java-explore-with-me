@@ -9,7 +9,6 @@ import ru.practicum.explore.service.CategoryService;
 
 @RestController
 @AllArgsConstructor
-@Validated
 @RequestMapping("/admin/categories")
 public class AdminCategoryController {
 

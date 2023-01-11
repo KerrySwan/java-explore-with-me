@@ -18,7 +18,7 @@ public class GuestCategoryController {
 
     @GetMapping
     public List<CategoryDto> getCompilation(@RequestParam(required = false, defaultValue = "0") int from,
-                                            @RequestParam(required = false, defaultValue = "0") int size) {
+                                            @RequestParam(required = false, defaultValue = "10") int size) {
         return categoryService.getAll(from, size);
     }
 

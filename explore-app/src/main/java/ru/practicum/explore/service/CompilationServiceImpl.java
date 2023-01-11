@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.practicum.explore.commons.dto.CompilationDto;
 import ru.practicum.explore.commons.dto.NewCompilationDto;
 import ru.practicum.explore.commons.mapper.CompilationMapper;
@@ -28,13 +29,12 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public CompilationDto add(NewCompilationDto newCompilationsDto) {
-        Compilation compilations = compilationRepository.saveAndFlush(CompilationMapper.toModel(newCompilationsDto));
-        entityManager.refresh(compilations);
+        Compilation compilations = compilationRepository.save(CompilationMapper.toModel(newCompilationsDto));
         return CompilationMapper.toDto(compilations);
     }
 
     @Override
-    public List<CompilationDto> getAll(boolean pinned, int from, int size) {
+    public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
         return compilationRepository.findAllPinned(pinned, PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id")))
                 .stream()
                 .map(CompilationMapper::toDto)
@@ -43,19 +43,19 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Transactional
     @Override
-    public CompilationDto getCompilation(long compId) {
+    public CompilationDto getCompilation(Long compId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка  не найдена"));
         return CompilationMapper.toDto(compilations);
     }
 
     @Override
-    public void delete(long compId) {
+    public void delete(Long compId) {
         compilationRepository.deleteById(compId);
     }
 
     @Override
-    public void deleteEvent(long compId, long eventId) {
+    public void deleteEvent(Long compId, Long eventId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
         List<Event> events = compilations.getEvents();
@@ -64,7 +64,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void addEvent(long compId, long eventId) {
+    public void addEvent(Long compId, Long eventId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
         List<Event> events = compilations.getEvents();
@@ -73,7 +73,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void unpin(long compId) {
+    public void unpin(Long compId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
         compilations.setPinned(false);
@@ -81,7 +81,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void pin(long compId) {
+    public void pin(Long compId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
         compilations.setPinned(true);

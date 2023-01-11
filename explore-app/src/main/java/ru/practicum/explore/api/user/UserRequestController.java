@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.ParticipationRequestDto;
 import ru.practicum.explore.service.RequestService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/user/{userId}/requests")
+@RequestMapping("/users/{userId}/requests")
 public class UserRequestController {
 
     private final RequestService requestService;
@@ -23,7 +25,7 @@ public class UserRequestController {
 
     @PostMapping
     public ParticipationRequestDto sendRequest(@PathVariable long userId,
-                                               @RequestParam long eventId) {
+                                               @RequestParam(name = "eventId") long eventId) {
         return requestService.addParticipationRequest(userId, eventId);
     }
 

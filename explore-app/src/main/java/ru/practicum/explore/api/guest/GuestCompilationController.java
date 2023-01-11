@@ -17,9 +17,9 @@ public class GuestCompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public List<CompilationDto> getCompilation(@RequestParam boolean pinned,
+    public List<CompilationDto> getCompilation(@RequestParam(required = false) Boolean pinned,
                                                @RequestParam(required = false, defaultValue = "0") int from,
-                                               @RequestParam(required = false, defaultValue = "0") int size) {
+                                               @RequestParam(required = false, defaultValue = "10") int size) {
         return compilationService.getAll(pinned, from, size);
     }
 

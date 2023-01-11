@@ -1,5 +1,6 @@
 package ru.practicum.explore.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                             "FROM \"user\" " +
                             "WHERE id in (:ids)"
     )
-    List<User> findAllById(Iterable<Long> ids, Pageable p);
+    Page<User> findAllById(Iterable<Long> ids, Pageable p);
 
 }

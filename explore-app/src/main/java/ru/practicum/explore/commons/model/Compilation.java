@@ -3,6 +3,7 @@ package ru.practicum.explore.commons.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,14 +18,12 @@ public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @OneToMany(fetch = FetchType.EAGER)
-    List<Event> events;
-    @ManyToOne()
-    @JoinColumn(
-            name = "user_id",
-            referencedColumnName = "id"
-    )
-    User user;
+    @Column(insertable = false, updatable = false)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "compilation_event",
+            joinColumns = {@JoinColumn(name = "compilation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+    List<Event> events = new ArrayList<>();
     boolean pinned;
     String title;
 

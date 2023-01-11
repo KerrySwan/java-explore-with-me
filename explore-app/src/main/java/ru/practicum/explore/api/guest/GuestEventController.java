@@ -25,11 +25,11 @@ public class GuestEventController {
 
     @GetMapping
     public List<EventShortDto> getEvents(HttpServletRequest request,
-                                         @RequestParam String text,
-                                         @RequestParam List<Long> categories,
-                                         @RequestParam boolean paid,
-                                         @RequestParam LocalDateTime rangeStart,
-                                         @RequestParam LocalDateTime rangeEnd,
+                                         @RequestParam(required = false) String text,
+                                         @RequestParam(required = false) List<Long> categories,
+                                         @RequestParam(required = false) boolean paid,
+                                         @RequestParam(required = false) LocalDateTime rangeStart,
+                                         @RequestParam(required = false) LocalDateTime rangeEnd,
                                          @RequestParam(required = false, defaultValue = "false") boolean onlyAvailable,
                                          @RequestParam(required = false) String sort,
                                          @RequestParam(required = false, defaultValue = "0") int from,

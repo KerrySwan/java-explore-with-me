@@ -11,24 +11,30 @@ import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ValidationExceptionHandler {
 
     @ExceptionHandler(InvalidIdException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected Object handleInvalidIdException(InvalidIdException ex) {
+    protected ApiError handleInvalidIdException(InvalidIdException ex) {
         return new ApiError(ex, "Невалидный id", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    protected Object handleInvalidIdException(ConstraintViolationException ex) {
-        return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.FORBIDDEN, LocalDateTime.now());
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected Object handleEntityNotFoundException(EntityNotFoundException ex) {
+    protected ApiError handleEntityNotFoundException(EntityNotFoundException ex) {
         return new ApiError(ex, "Объект не найден", HttpStatus.NOT_FOUND, LocalDateTime.now());
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected ApiError handleInvalidIdException(ConstraintViolationException ex) {
+        return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.FORBIDDEN, LocalDateTime.now());
+    }
+
+/*    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleEntityNotFoundException(Exception ex) {
+        return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+    }*/
 
 }

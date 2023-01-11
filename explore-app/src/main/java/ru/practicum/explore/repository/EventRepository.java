@@ -18,32 +18,31 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     public Event getByIdAndUserId(long id, long userId);
 
     @Query(
-            nativeQuery = true,
             value =
-                    "Select * " +
-                            "from event " +
-                            "where category_id in :categories" +
-                            "  and paid = :isPaid" +
-                            "  and event_date > :rangeStart " +
-                            "  and event_date < :rangeEnd" +
-                            "  and " +
-                            "  ( (:isAvailable and participantLimit <> confirmed_requests) or (not :isAvailable and participantLimit = confirmed_requests) )" +
-                            "  and " +
-                            "  (annotation ilike :text or description ilike :text )"
-
+                    "Select e " +
+                    "from Event e " +
+                    "where (:categories is null or e.category.id in :categories)" +
+                    "  and (:isPaid is null or e.paid = :isPaid)" +
+                    "  and (cast(:rangeStart as date) is null or e.eventDate > :rangeStart) " +
+                    "  and (cast(:rangeEnd as date) is null or e.eventDate < :rangeEnd)" +
+                    "  and " +
+                    "  (:isAvailable is null or " +
+                        "(:isAvailable = true and e.participantLimit <> e.confirmedRequests) or " +
+                        "(:isAvailable = false and e.participantLimit = e.confirmedRequests) " +
+                       ")" +
+                    "  and (:text is null or e.annotation like :text or e.description like :text)"
     )
-    public Page<Event> findAllWithFiltration(String text, List<Long> categories, boolean isPaid, LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean isAvailable, Pageable pageable);
+    public Page<Event> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean isAvailable, Pageable p);
 
     @Query(
-            nativeQuery = true,
             value =
-                    "Select * " +
-                            "from event " +
-                            "where user_id in :users " +
-                            "  and state in :states " +
-                            "  and category_id in :categories" +
-                            "  and event_date > :rangeStart " +
-                            "  and event_date < :rangeEnd"
+                    "Select e " +
+                    "from Event e " +
+                    "where (:users is null or e.user.id in :users) " +
+                    "  and (:states is null or e.state.name in (:states)) " +
+                    "  and (:categories is null or e.category.id in :categories)" +
+                    "  and (cast(:rangeStart as date) is null or e.eventDate > :rangeStart) " +
+                    "  and (cast(:rangeEnd as date) is null or e.eventDate < :rangeEnd)"
 
     )
     public Page<Event> findAllByAdmin(List<Long> users, List<String> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable p);

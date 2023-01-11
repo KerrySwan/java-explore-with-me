@@ -2,12 +2,13 @@ package ru.practicum.explore.commons.dto;
 
 import lombok.*;
 
+
+@ToString
+@Builder
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 public class ViewStatsDto {
 
     private String app;

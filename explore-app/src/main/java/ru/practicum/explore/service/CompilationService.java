@@ -9,18 +9,18 @@ public interface CompilationService {
 
     CompilationDto add(NewCompilationDto newCompilationsDto);
 
-    List<CompilationDto> getAll(boolean pinned, int from, int size);
+    List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size);
 
-    CompilationDto getCompilation(long compId);
+    CompilationDto getCompilation(Long compId);
 
-    void delete(long compId);
+    void delete(Long compId);
 
-    void deleteEvent(long compId, long eventId);
+    void deleteEvent(Long compId, Long eventId);
 
-    void addEvent(long compId, long eventId);
+    void addEvent(Long compId, Long eventId);
 
-    void unpin(long compId);
+    void unpin(Long compId);
 
-    void pin(long compId);
+    void pin(Long compId);
 
 }

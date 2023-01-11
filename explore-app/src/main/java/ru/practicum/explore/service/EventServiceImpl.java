@@ -89,7 +89,9 @@ public class EventServiceImpl implements EventService {
                     String.format("Связка eventId = %d и userId = %d не найдена", dto.getEventId(), userId)
             );
         }
-        Event e = eventRepository.save(EventMapper.toModel(dto));
+        Event e = eventRepository.getByIdAndUserId(dto.getEventId(), userId);
+        e = updateEvent(e, dto);
+        e = eventRepository.save(EventMapper.toModel(dto));
         return EventMapper.toFullDto(e);
     }
 
@@ -103,6 +105,8 @@ public class EventServiceImpl implements EventService {
             );
         }
         Event e = EventMapper.toModel(dto);
+        e.setCategory(categoryRepository.getById(dto.getCategory()));
+        e.setUser(userRepository.getById(userId));
         e.setState(stateRepository.getById(1L));
         e = eventRepository.save(e);
         return EventMapper.toFullDto(e);
@@ -265,4 +269,14 @@ public class EventServiceImpl implements EventService {
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 
+    private Event updateEvent(Event e, UpdateEventRequestDto dto){
+        if (dto.getAnnotation() != null) e.setAnnotation(dto.getAnnotation());
+        if (dto.getCategoryId() != null) e.setCategory(categoryRepository.getById(dto.getCategoryId()));
+        if (dto.getDescription() != null) e.setDescription(dto.getDescription());
+        if (dto.getEventDate() != null) e.setEventDate(dto.getEventDate());
+        if (dto.getPaid() != null) e.setPaid(dto.getPaid());
+        if (dto.getParticipantLimit() != null) e.setParticipantLimit(dto.getParticipantLimit());
+        if (dto.getTitle() != null) e.setTitle(dto.getTitle());
+        return e;
+    }
 }
