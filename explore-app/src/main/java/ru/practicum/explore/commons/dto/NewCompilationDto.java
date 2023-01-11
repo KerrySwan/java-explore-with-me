@@ -2,7 +2,7 @@ package ru.practicum.explore.commons.dto;
 
 import lombok.*;
 
-import java.util.Collection;
+import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +19,7 @@ public class NewCompilationDto {
 
     List<Long> events;
     boolean pinned;
+    @NotBlank
     String title;
 
 
