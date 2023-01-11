@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.practicum.explore.commons.dto.CompilationDto;
 import ru.practicum.explore.commons.dto.NewCompilationDto;
 import ru.practicum.explore.commons.mapper.CompilationMapper;
@@ -15,7 +14,6 @@ import ru.practicum.explore.commons.model.Event;
 import ru.practicum.explore.repository.CompilationRepository;
 import ru.practicum.explore.repository.EventRepository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,8 +69,10 @@ public class CompilationServiceImpl implements CompilationService {
     public void addEvent(Long compId, Long eventId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка не найдена"));
-        List<Event> events = compilations.getEvents();
-        events.add(Event.builder().id(eventId).build());
+        Event events = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Событие не найдено"));
+
+        compilations.getEvents().add(events);
         compilationRepository.save(compilations);
     }
 
