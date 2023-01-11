@@ -2,7 +2,6 @@ package ru.practicum.explore.service;
 
 import ru.practicum.explore.commons.dto.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventService {
@@ -28,7 +27,7 @@ public interface EventService {
 
     public EventFullDto cancelEventByUser(long userId, long eventId);
 
-    public List<ParticipationRequestDto> getRequestsByUser(long userId, long eventId);
+    public List<ParticipationRequestDto> getRequestsByEventId(long userId, long eventId);
 
     public ParticipationRequestDto confirmRequest(long userId, long eventId, long reqId);
 

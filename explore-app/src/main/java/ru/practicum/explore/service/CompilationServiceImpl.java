@@ -13,6 +13,7 @@ import ru.practicum.explore.commons.mapper.CompilationMapper;
 import ru.practicum.explore.commons.model.Compilation;
 import ru.practicum.explore.commons.model.Event;
 import ru.practicum.explore.repository.CompilationRepository;
+import ru.practicum.explore.repository.EventRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -24,12 +25,14 @@ import java.util.stream.Collectors;
 public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
-    private final EntityManager entityManager;
+    private final EventRepository eventRepository;
 
     @Transactional
     @Override
     public CompilationDto add(NewCompilationDto newCompilationsDto) {
         Compilation compilations = compilationRepository.save(CompilationMapper.toModel(newCompilationsDto));
+        List<Event> events = eventRepository.findAllByEventIdIn(newCompilationsDto.getEvents());
+        compilations.setEvents(events);
         return CompilationMapper.toDto(compilations);
     }
 

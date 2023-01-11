@@ -12,10 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 public class CompilationDto {
 
-    long id;
     @NotBlank
     String title;
+    long id;
     boolean pinned;
-    List<Long> events;
+    List<EventShortDto> events;
 
 }

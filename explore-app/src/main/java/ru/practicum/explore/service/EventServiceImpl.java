@@ -158,9 +158,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<ParticipationRequestDto> getRequestsByUser(long userId, long eventId) {
+    public List<ParticipationRequestDto> getRequestsByEventId(long userId, long eventId) {
         return requestRepository
-                .findAllByUserIdAndEventId(userId, eventId)
+                .findAllByEventIdAndByEventUserId(eventId, userId)
                 .stream()
                 .map(RequestMapper::toDto)
                 .collect(Collectors.toList());

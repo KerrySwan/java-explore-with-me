@@ -11,10 +11,6 @@ public class CompilationMapper {
 
     public static Compilation toModel(NewCompilationDto dto) {
         return Compilation.builder()
-                .events(dto.getEvents()
-                        .stream()
-                        .map(el -> Event.builder().id(el).build())
-                        .collect(Collectors.toList()))
                 .pinned(dto.isPinned())
                 .title(dto.getTitle())
                 .build();
@@ -24,7 +20,7 @@ public class CompilationMapper {
         return CompilationDto.builder()
                 .id(compilations.getId())
                 .events(compilations.getEvents().stream()
-                        .map(Event::getId)
+                        .map(EventMapper::toShortDto)
                         .collect(Collectors.toList()))
                 .pinned(compilations.isPinned())
                 .title(compilations.getTitle())

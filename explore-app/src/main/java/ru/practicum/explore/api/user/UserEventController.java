@@ -51,7 +51,7 @@ public class UserEventController {
     @GetMapping(path = "/{eventId}/requests")
     public List<ParticipationRequestDto> getEventRequestByEventId(@PathVariable long userId,
                                                                   @PathVariable long eventId) {
-        return eventService.getRequestsByUser(userId, eventId);
+        return eventService.getRequestsByEventId(userId, eventId);
     }
 
     @PatchMapping(path = "/{eventId}/requests/{reqId}/confirm")

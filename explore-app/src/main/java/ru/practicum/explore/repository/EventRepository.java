@@ -14,6 +14,12 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
+    @Query(
+            value = "select e " +
+                    "from Event e " +
+                    "where e.id in :ids"
+    )
+    List<Event> findAllByEventIdIn(List<Long> ids);
     public List<Event> findAllByUserId(long userId, Pageable p);
 
     public Event getByIdAndUserId(long id, long userId);
