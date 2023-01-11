@@ -7,6 +7,7 @@ import ru.practicum.explore.commons.dto.UserDto;
 import ru.practicum.explore.commons.error.InvalidIdException;
 import ru.practicum.explore.service.UserService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -27,7 +28,7 @@ public class AdminUserController {
     }
 
     @PostMapping
-    public UserDto addUser(@RequestBody UserDto dto) {
+    public UserDto addUser(@Valid @RequestBody UserDto dto) {
         return userService.addUser(dto);
     }
 

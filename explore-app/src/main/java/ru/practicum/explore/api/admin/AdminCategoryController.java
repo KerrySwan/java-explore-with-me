@@ -7,6 +7,8 @@ import ru.practicum.explore.commons.dto.CategoryDto;
 import ru.practicum.explore.commons.dto.NewCategoryDto;
 import ru.practicum.explore.service.CategoryService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/admin/categories")
@@ -15,12 +17,12 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
 
     @PatchMapping
-    public CategoryDto updateCategory(@RequestBody CategoryDto dto) {
+    public CategoryDto updateCategory(@Valid @RequestBody CategoryDto dto) {
         return categoryService.update(dto);
     }
 
     @PostMapping
-    public CategoryDto addCategory(@RequestBody NewCategoryDto dto) {
+    public CategoryDto addCategory(@Valid @RequestBody NewCategoryDto dto) {
         return categoryService.add(dto);
     }
 

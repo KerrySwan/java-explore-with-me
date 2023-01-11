@@ -2,6 +2,7 @@ package ru.practicum.explore.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,10 +17,12 @@ import ru.practicum.explore.commons.mapper.RequestMapper;
 import ru.practicum.explore.commons.model.Event;
 import ru.practicum.explore.commons.model.EventState;
 import ru.practicum.explore.commons.model.Request;
+import ru.practicum.explore.config.JacksonConfiguration;
 import ru.practicum.explore.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,20 +42,38 @@ public class EventServiceImpl implements EventService {
      **/
 
     @Override
-    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, boolean isPaid, LocalDateTime start, LocalDateTime end, boolean isAvailable, String sort, int from, int size) {
+    public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, LocalDateTime start, LocalDateTime end, Boolean isAvailable, String sort, int from, int size) {
         Sort sorting;
-        switch (sort) {
-            case "EVENT_DATE":
-                sorting = Sort.by(Sort.Direction.ASC, "eventDate");
-                break;
-            case "VIEWS":
-                sorting = Sort.by(Sort.Direction.ASC, "views");
-                break;
-            default:
-                sorting = Sort.by(Sort.Direction.ASC, "id");
-        }
-        Page<Event> e = eventRepository.findAllWithFiltration(text, categories, isPaid, start, end, isAvailable, PageRequest.of(from / size, size, sorting));
-        return e.stream()
+        if (sort == null)
+            sorting = Sort.by(Sort.Direction.ASC, "id");
+        else if (sort.equals("EVENT_DATE"))
+            sorting = Sort.by(Sort.Direction.ASC, "eventDate");
+        else if (sort.equals("VIEWS"))
+            sorting = Sort.by(Sort.Direction.ASC, "views");
+        else
+            sorting = Sort.by(Sort.Direction.ASC, "id");
+        Page<Event> events = eventRepository.findAll((root, query, criteriaBuilder) ->
+                        criteriaBuilder.and(
+                                criteriaBuilder.equal(root.get("state"), new EventState(2, "PUBLISHED")),
+                                root.get("category").in(categories),
+                                criteriaBuilder.equal(root.get("paid"), isPaid),
+                                (start != null && end != null) ?
+                                        criteriaBuilder.and(
+                                                criteriaBuilder.greaterThan(root.get("eventDate"), start),
+                                                criteriaBuilder.lessThan(root.get("eventDate"), end)
+                                        ) : criteriaBuilder.lessThan(root.get("eventDate"), LocalDateTime.now()),
+                                (isAvailable) ? criteriaBuilder.or(
+                                        criteriaBuilder.equal(root.get("participantLimit"), 0),
+                                        criteriaBuilder.and(
+                                                criteriaBuilder.notEqual(root.get("participantLimit"), 0),
+                                                criteriaBuilder.greaterThan(root.get("participantLimit"), root.get("confirmedRequests"))
+                                        )) : root.isNotNull(),
+                                criteriaBuilder.or(
+                                        criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text.toLowerCase() + "%"),
+                                        criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text.toLowerCase() + "%")
+                                )),
+                PageRequest.of(from / size, size, sorting));
+        return events.stream()
                 .map(EventMapper::toShortDto)
                 .collect(Collectors.toList());
     }
@@ -191,16 +212,16 @@ public class EventServiceImpl implements EventService {
     public List<EventFullDto> findAllByAdmin(List<Long> users,
                                              List<String> states,
                                              List<Long> categories,
-                                             LocalDateTime rangeStart,
-                                             LocalDateTime rangeEnd,
+                                             String rangeStart,
+                                             String rangeEnd,
                                              int from,
                                              int size) {
         Page<Event> events = eventRepository.findAllByAdmin(
                 users,
                 states,
                 categories,
-                rangeStart,
-                rangeEnd,
+                LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf),
+                LocalDateTime.parse(rangeStart, JacksonConfiguration.dtf),
                 PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"))
         );
         return events.stream()

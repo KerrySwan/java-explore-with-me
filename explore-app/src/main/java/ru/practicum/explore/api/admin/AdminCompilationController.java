@@ -7,6 +7,8 @@ import ru.practicum.explore.commons.dto.CompilationDto;
 import ru.practicum.explore.commons.dto.NewCompilationDto;
 import ru.practicum.explore.service.CompilationService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @Validated
@@ -16,7 +18,7 @@ public class AdminCompilationController {
     private final CompilationService compilationService;
 
     @PostMapping
-    public CompilationDto addCategory(@RequestBody NewCompilationDto dto) {
+    public CompilationDto addCategory(@Valid @RequestBody NewCompilationDto dto) {
         return compilationService.add(dto);
     }
 

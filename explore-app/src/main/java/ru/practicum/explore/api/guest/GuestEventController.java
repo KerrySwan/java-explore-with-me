@@ -27,13 +27,13 @@ public class GuestEventController {
     public List<EventShortDto> getEvents(HttpServletRequest request,
                                          @RequestParam(required = false) String text,
                                          @RequestParam(required = false) List<Long> categories,
-                                         @RequestParam(required = false) boolean paid,
+                                         @RequestParam(required = false) Boolean paid,
                                          @RequestParam(required = false) LocalDateTime rangeStart,
                                          @RequestParam(required = false) LocalDateTime rangeEnd,
-                                         @RequestParam(required = false, defaultValue = "false") boolean onlyAvailable,
+                                         @RequestParam(required = false, defaultValue = "false") Boolean onlyAvailable,
                                          @RequestParam(required = false) String sort,
                                          @RequestParam(required = false, defaultValue = "0") int from,
-                                         @RequestParam(required = false, defaultValue = "0") int size) throws URISyntaxException, IOException, InterruptedException {
+                                         @RequestParam(required = false, defaultValue = "10") int size) throws URISyntaxException, IOException, InterruptedException {
         List<EventShortDto> dtoList = eventService.findAllWithFiltration(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         return hitService.getView(request, dtoList);
     }

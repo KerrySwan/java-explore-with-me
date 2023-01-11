@@ -2,6 +2,8 @@ package ru.practicum.explore.commons.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Builder
 @Getter
 @Setter
@@ -10,6 +12,7 @@ import lombok.*;
 public class NewUserRequestDto {
 
     String email;
+    @NotBlank
     String name;
 
 }

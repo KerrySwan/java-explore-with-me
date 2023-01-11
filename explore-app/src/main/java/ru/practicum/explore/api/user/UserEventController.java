@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.*;
 import ru.practicum.explore.service.EventService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,13 +26,13 @@ public class UserEventController {
 
     @PatchMapping
     public EventFullDto updateEvent(@PathVariable long userId,
-                                    @RequestBody UpdateEventRequestDto dto) {
+                                    @Valid @RequestBody UpdateEventRequestDto dto) {
         return eventService.updateEventByUser(userId, dto);
     }
 
     @PostMapping
     public EventFullDto addEvent(@PathVariable long userId,
-                                 @RequestBody NewEventDto dto) {
+                                 @Valid @RequestBody NewEventDto dto) {
         return eventService.addEventByUser(userId, dto);
     }
 

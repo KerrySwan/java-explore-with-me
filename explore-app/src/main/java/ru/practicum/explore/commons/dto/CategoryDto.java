@@ -2,6 +2,9 @@ package ru.practicum.explore.commons.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Getter
 @Setter
@@ -9,7 +12,10 @@ import lombok.*;
 @AllArgsConstructor
 public class CategoryDto {
 
-    long id;
-    String name;
+    @NotNull
+    private Long id;
+
+    @NotBlank
+    private String name;
 
 }
