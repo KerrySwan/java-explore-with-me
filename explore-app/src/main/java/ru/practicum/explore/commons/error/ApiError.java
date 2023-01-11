@@ -13,18 +13,18 @@ public class ApiError {
 
     String message;
     String reason;
-    HttpStatus httpStatus;
+    HttpStatus status;
     LocalDateTime timestamp;
     List<String> errors;
 
-    public ApiError(Exception ex, String message, HttpStatus httpStatus, LocalDateTime timestamp) {
+    public ApiError(Exception ex, String message, HttpStatus status, LocalDateTime timestamp) {
         this.errors =
                 Arrays.stream(ex.getStackTrace())
                         .map(StackTraceElement::toString)
                         .collect(Collectors.toList());
         this.message = message;
         this.reason = ex.getLocalizedMessage();
-        this.httpStatus = httpStatus;
+        this.status = status;
         this.timestamp = timestamp;
     }
 }
