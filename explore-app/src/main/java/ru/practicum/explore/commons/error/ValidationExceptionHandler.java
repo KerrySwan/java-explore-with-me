@@ -37,10 +37,10 @@ public class ValidationExceptionHandler {
         return new ApiError(ex, "Нарушение целостности данных", HttpStatus.FORBIDDEN, LocalDateTime.now());
     }
 
-/*    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleEntityNotFoundException(Exception ex) {
         return new ApiError(ex, "Запрос составлен с ошибкой", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-    }*/
+    }
 
 }
