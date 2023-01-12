@@ -2,6 +2,7 @@ package ru.practicum.stat.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.stat.commons.dto.EndpointHitDto;
@@ -22,6 +23,8 @@ public class HitServiceImpl implements HitService {
 
     private final HitRepository hitRepository;
 
+    private final static Sort s = Sort.by(Sort.Direction.ASC, "uri");
+
     @Override
     @Transactional
     public void addEndpointHit(EndpointHitDto endpointHitDto) {
@@ -38,9 +41,9 @@ public class HitServiceImpl implements HitService {
         LocalDateTime startDt = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endDt = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if (isDistinct) {
-            return hitRepository.countTotalIpDistinct(startDt, endDt, uri);
+            return hitRepository.countTotalIpDistinct(startDt, endDt, uri, s);
         } else {
-            return hitRepository.countTotalIp(startDt, endDt, uri);
+            return hitRepository.countTotalIp(startDt, endDt, uri, s);
         }
     }
 

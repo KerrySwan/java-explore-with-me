@@ -1,5 +1,6 @@
 package ru.practicum.stat.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +25,8 @@ public interface HitRepository extends JpaRepository<EndpointHit, Long>, JpaSpec
     List<ViewStatsDto> countTotalIp(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
-            @Param("uris") List<String> uris);
+            @Param("uris") List<String> uris,
+            Sort sort);
 
     @Query("SELECT " +
             "new ru.practicum.stat.commons.dto.ViewStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip)) " +
@@ -36,6 +38,7 @@ public interface HitRepository extends JpaRepository<EndpointHit, Long>, JpaSpec
     List<ViewStatsDto> countTotalIpDistinct(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
-            @Param("uris") List<String> uris);
+            @Param("uris") List<String> uris,
+            Sort sort);
 
 }
