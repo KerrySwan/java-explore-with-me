@@ -62,7 +62,7 @@ public class EventServiceImpl implements EventService {
                                         criteriaBuilder.and(
                                                 criteriaBuilder.greaterThan(root.get("eventDate"), start),
                                                 criteriaBuilder.lessThan(root.get("eventDate"), end)
-                                        ) : criteriaBuilder.lessThan(root.get("eventDate"), LocalDateTime.now()),
+                                        ) : criteriaBuilder.greaterThan(root.get("eventDate"), LocalDateTime.now()),
                                 (isAvailable) ? criteriaBuilder.or(
                                         criteriaBuilder.equal(root.get("participantLimit"), 0),
                                         criteriaBuilder.and(
