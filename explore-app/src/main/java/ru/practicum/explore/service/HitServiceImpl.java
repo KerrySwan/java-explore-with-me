@@ -81,7 +81,7 @@ public class HitServiceImpl implements HitService {
                 .map(el -> "/events/" + el.getId())
                 .collect(Collectors.toList());
         List<ViewStatsDto> statsViewDtoList = getStats(url);
-        Map<String, ViewStatsDto> statsViewDtoMap = statsViewDtoList.stream().collect(Collectors.toMap(ViewStatsDto::getUrl, v -> v));
+        Map<String, ViewStatsDto> statsViewDtoMap = statsViewDtoList.stream().collect(Collectors.toMap(ViewStatsDto::getUri, v -> v));
         dtos.forEach(el -> {
             String key = "/events/" + el.getId();
             ViewStatsDto stats = new ViewStatsDto();
@@ -109,11 +109,11 @@ public class HitServiceImpl implements HitService {
                 .thenApply(HttpResponse::statusCode);
     }
 
-    private List<ViewStatsDto> getStats(List<String> url) throws URISyntaxException, IOException, InterruptedException {
+    private List<ViewStatsDto> getStats(List<String> uris) throws URISyntaxException, IOException, InterruptedException {
         URI uri = new URIBuilder(serverUrl + "/stats")
                 .addParameter("start", LocalDateTime.now().minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .addParameter("end", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .addParameter("url", String.join(",", url))
+                .addParameter("uris", String.join(",", uris))
                 .build();
 
         HttpRequest statRequest = HttpRequest.newBuilder(uri)

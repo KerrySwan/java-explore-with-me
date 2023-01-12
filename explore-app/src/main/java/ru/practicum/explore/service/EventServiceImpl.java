@@ -56,8 +56,8 @@ public class EventServiceImpl implements EventService {
         Page<Event> events = eventRepository.findAll((root, query, criteriaBuilder) ->
                         criteriaBuilder.and(
                                 criteriaBuilder.equal(root.get("state"), new EventState(2, "PUBLISHED")),
-                                root.get("category").in(categories),
-                                criteriaBuilder.equal(root.get("paid"), isPaid),
+                                categories == null ? root.isNotNull() : root.get("category").in(categories),
+                                isPaid == null ? root.isNotNull() : criteriaBuilder.equal(root.get("paid"), isPaid),
                                 (start != null && end != null) ?
                                         criteriaBuilder.and(
                                                 criteriaBuilder.greaterThan(root.get("eventDate"), start),

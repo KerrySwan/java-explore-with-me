@@ -12,7 +12,7 @@ import lombok.*;
 public class ViewStatsDto {
 
     private String app;
-    private String url;
+    private String uri;
     private Long hits = 0L;
 
 }

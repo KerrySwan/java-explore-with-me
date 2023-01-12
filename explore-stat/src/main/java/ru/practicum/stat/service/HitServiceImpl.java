@@ -38,9 +38,9 @@ public class HitServiceImpl implements HitService {
         LocalDateTime startDt = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endDt = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if (isDistinct) {
-            return hitRepository.countTotalIpDistinct(startDt, endDt);
+            return hitRepository.countTotalIpDistinct(startDt, endDt, uri);
         } else {
-            return hitRepository.countTotalIp(startDt, endDt);
+            return hitRepository.countTotalIp(startDt, endDt, uri);
         }
     }
 
