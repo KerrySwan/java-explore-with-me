@@ -21,6 +21,7 @@ import ru.practicum.explore.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,7 @@ public class EventServiceImpl implements EventService {
                                                 criteriaBuilder.notEqual(root.get("participantLimit"), 0),
                                                 criteriaBuilder.greaterThan(root.get("participantLimit"), root.get("confirmedRequests"))
                                         )) : root.isNotNull(),
+                                text == null ? root.isNotNull() :
                                 criteriaBuilder.or(
                                         criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text.toLowerCase() + "%"),
                                         criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text.toLowerCase() + "%")

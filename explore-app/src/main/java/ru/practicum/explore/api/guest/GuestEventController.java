@@ -11,7 +11,8 @@ import ru.practicum.explore.service.HitService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class GuestEventController {
     @GetMapping
     public List<EventShortDto> getEvents(HttpServletRequest request,
                                          @RequestParam(required = false) String text,
-                                         @RequestParam(required = false) List<Long> categories,
+                                         @RequestParam(required = false, defaultValue = "") List<Long> categories,
                                          @RequestParam(required = false) Boolean paid,
                                          @RequestParam(required = false) String rangeStart,
                                          @RequestParam(required = false) String rangeEnd,

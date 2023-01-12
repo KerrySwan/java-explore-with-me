@@ -19,23 +19,19 @@ public interface HitRepository extends JpaRepository<EndpointHit, Long>, JpaSpec
             "FROM EndpointHit AS s " +
             "WHERE s.timestamp > :start " +
             "and s.timestamp < :end " +
-            "and s.uri IN :uris " +
             "GROUP BY s.app, s.uri")
     List<ViewStatsDto> countTotalIp(
             @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end,
-            @Param("uris") List<String> uris);
+            @Param("end") LocalDateTime end);
 
     @Query("SELECT " +
             "new ru.practicum.stat.commons.dto.ViewStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip)) " +
             "FROM EndpointHit AS s " +
             "WHERE s.timestamp > :start " +
             "and s.timestamp < :end " +
-            "and s.uri IN :uris " +
             "GROUP BY s.app, s.uri")
     List<ViewStatsDto> countTotalIpDistinct(
             @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end,
-            @Param("uris") List<String> uris);
+            @Param("end") LocalDateTime end);
 
 }
