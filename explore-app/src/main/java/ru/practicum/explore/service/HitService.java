@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HitService {
 
-    void addHit(HttpServletRequest req) throws URISyntaxException, JsonProcessingException;
+    void addHit(HttpServletRequest req) throws URISyntaxException, IOException, InterruptedException;
 
     EventFullDto getView(HttpServletRequest req, EventFullDto dto) throws URISyntaxException, IOException, InterruptedException;
 

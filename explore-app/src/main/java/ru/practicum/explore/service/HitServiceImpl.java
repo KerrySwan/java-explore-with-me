@@ -38,7 +38,7 @@ public class HitServiceImpl implements HitService {
 
 
     @Override
-    public void addHit(HttpServletRequest req) throws URISyntaxException, JsonProcessingException {
+    public void addHit(HttpServletRequest req) throws URISyntaxException, IOException, InterruptedException {
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
                 .app("explore-main-service")
                 .uri(req.getRequestURL().toString())
@@ -50,7 +50,7 @@ public class HitServiceImpl implements HitService {
 
     ;
 
-    private void addHit(HttpServletRequest request, List<String> url) throws JsonProcessingException, URISyntaxException {
+    private void addHit(HttpServletRequest request, List<String> url) throws IOException, URISyntaxException, InterruptedException {
         List<EndpointHitDto> statsHitDtoList = url.stream()
                 .map(uri -> EndpointHitDto.builder()
                         .app("explore-main-service")
@@ -68,10 +68,10 @@ public class HitServiceImpl implements HitService {
     @Override
     public EventFullDto getView(HttpServletRequest req, EventFullDto dto) throws URISyntaxException, IOException, InterruptedException {
         List<String> url = List.of("/events/" + dto.getId());
+        addHit(req, url);
         List<ViewStatsDto> statsViewDto = getStats(url);
         Long view = (statsViewDto.size() != 0) ? statsViewDto.get(0).getHits() : 0L;
         dto.setViews(view);
-        addHit(req, url);
         return dto;
     }
 
@@ -80,6 +80,7 @@ public class HitServiceImpl implements HitService {
         List<String> url = dtos.stream()
                 .map(el -> "/events/" + el.getId())
                 .collect(Collectors.toList());
+        addHit(req, url);
         List<ViewStatsDto> statsViewDtoList = getStats(url);
         Map<String, ViewStatsDto> statsViewDtoMap = statsViewDtoList.stream().collect(Collectors.toMap(ViewStatsDto::getUri, v -> v));
         dtos.forEach(el -> {
@@ -88,13 +89,12 @@ public class HitServiceImpl implements HitService {
             Long hits = statsViewDtoMap.getOrDefault(key, stats).getHits();
             el.setViews(hits);
         });
-        addHit(req, url);
         return dtos;
     }
 
     ;
 
-    private void sendHit(EndpointHitDto endpointHitDto) throws JsonProcessingException, URISyntaxException {
+    private void sendHit(EndpointHitDto endpointHitDto) throws IOException, URISyntaxException, InterruptedException {
         String requestBody = objectMapper
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(endpointHitDto);
@@ -104,9 +104,9 @@ public class HitServiceImpl implements HitService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        HttpClient.newHttpClient()
-                .sendAsync(statRequest, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::statusCode);
+        HttpResponse<String> response = HttpClient.newHttpClient()
+                .send(statRequest, HttpResponse.BodyHandlers.ofString());
+        Thread.sleep(1000);
     }
 
     private List<ViewStatsDto> getStats(List<String> uris) throws URISyntaxException, IOException, InterruptedException {
