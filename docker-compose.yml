@@ -1,15 +1,63 @@
 version: '3.1'
 services:
   stats-server:
+    build: ./explore-stat
+    container_name: stats-service
     ports:
       - "9090:9090"
+    depends_on:
+      - stat-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stat-db:5432/stat
+    networks:
+      - stats-server
+      - services
 
-  stats-db:
+  stat-db:
     image: postgres:14-alpine
+    container_name: stat-db
+    ports:
+      - "6543:5432"
+    environment:
+      POSTGRES_DB: "stat"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_PORT: 5433
+    networks:
+      - stats-server
 
-  ewm-service:
+  explore-service:
+    build: ./explore-app
+    container_name: explore-service
     ports:
       - "8080:8080"
+    depends_on:
+      - explore-db
+    environment:
+      - STATS_SERVER_URL=http://stats-server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://explore-db:5432/explore
+    networks:
+      - explore-service
+      - services
 
-  ewm-db:
+  explore-db:
     image: postgres:14-alpine
+    container_name: explore-db
+    ports:
+      - "6541:5432"
+    environment:
+      POSTGRES_DB: "explore"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+      DB_HOST: "explore-db"
+      DB_PORT: 5432
+    networks:
+      - explore-service
+
+networks:
+  explore-service:
+    driver: bridge
+  stats-server:
+    driver: bridge
+  services:
+    driver: bridge
