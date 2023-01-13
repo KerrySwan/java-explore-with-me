@@ -1,6 +1,5 @@
 package ru.practicum.explore.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.utils.URIBuilder;
@@ -47,8 +46,6 @@ public class HitServiceImpl implements HitService {
                 .build();
         sendHit(endpointHitDto);
     }
-
-    ;
 
     private void addHit(HttpServletRequest request, List<String> url) throws IOException, URISyntaxException, InterruptedException {
         List<EndpointHitDto> statsHitDtoList = url.stream()
@@ -104,7 +101,7 @@ public class HitServiceImpl implements HitService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        HttpResponse<String> response = HttpClient.newHttpClient()
+        HttpClient.newHttpClient()
                 .send(statRequest, HttpResponse.BodyHandlers.ofString());
         Thread.sleep(1000);
     }

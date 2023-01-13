@@ -31,7 +31,7 @@ public class Event {
     String description;
     @Column(name = "event_date")
     LocalDateTime eventDate;
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id"

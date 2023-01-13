@@ -11,9 +11,9 @@ import java.util.List;
 public interface StateRepository extends JpaRepository<EventState, Long> {
 
     @Query(
-        value = "select e " +
-                "from EventState e " +
-                "where e.name in :names"
+            value = "select e " +
+                    "from EventState e " +
+                    "where e.name in :names"
     )
     public List<EventState> findAllByNames(List<String> names);
 

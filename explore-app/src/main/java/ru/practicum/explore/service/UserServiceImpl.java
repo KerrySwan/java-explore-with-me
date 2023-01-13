@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -27,17 +27,16 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public List<UserDto> getUsers(List<Long> ids, int from, int size) {
-        Page<User> u;
+        Page<User> users;
         if (ids != null) {
             for (Long id : ids) {
-                if (id <= 0) throw new InvalidIdException("Переданное значние id меньше или равно нулю. ID = " + id);
+                if (id <= 0) throw new InvalidIdException("Переданное значение id меньше или равно нулю. ID = " + id);
             }
-            u = userRepository.findAllById(ids, PageRequest.of((from / size), size));
+            users = userRepository.findAllById(ids, PageRequest.of((from / size), size));
+        } else {
+            users = userRepository.findAll(PageRequest.of((from / size), size));
         }
-        else {
-            u = userRepository.findAll(PageRequest.of((from / size), size));
-        }
-        return u.stream()
+        return users.stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }

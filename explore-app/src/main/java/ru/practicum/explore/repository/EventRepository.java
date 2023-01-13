@@ -20,6 +20,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
                     "where e.id in :ids"
     )
     List<Event> findAllByEventIdIn(List<Long> ids);
+
     public List<Event> findAllByUserId(long userId, Pageable p);
 
     public Event getByIdAndUserId(long id, long userId);
@@ -27,12 +28,12 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     @Query(
             value =
                     "Select e " +
-                    "from Event e " +
-                    "where (:users is null or e.user.id in :users) " +
-                    "  and (:states is null or e.state.name in (:states)) " +
-                    "  and (:categories is null or e.category.id in :categories)" +
-                    "  and (cast(:rangeStart as date) is null or e.eventDate > :rangeStart) " +
-                    "  and (cast(:rangeEnd as date) is null or e.eventDate < :rangeEnd)"
+                            "from Event e " +
+                            "where (:users is null or e.user.id in :users) " +
+                            "  and (:states is null or e.state.name in (:states)) " +
+                            "  and (:categories is null or e.category.id in :categories)" +
+                            "  and (cast(:rangeStart as date) is null or e.eventDate > :rangeStart) " +
+                            "  and (cast(:rangeEnd as date) is null or e.eventDate < :rangeEnd)"
 
     )
     public Page<Event> findAllByAdmin(List<Long> users, List<String> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable p);

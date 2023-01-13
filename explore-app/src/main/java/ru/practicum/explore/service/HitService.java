@@ -1,6 +1,5 @@
 package ru.practicum.explore.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import ru.practicum.explore.commons.dto.EventFullDto;
 import ru.practicum.explore.commons.dto.EventShortDto;
 

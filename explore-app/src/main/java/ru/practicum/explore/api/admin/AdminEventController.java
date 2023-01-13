@@ -8,7 +8,6 @@ import ru.practicum.explore.commons.dto.UpdateEventRequestDto;
 import ru.practicum.explore.service.EventService;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

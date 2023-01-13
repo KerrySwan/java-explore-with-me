@@ -1,7 +1,6 @@
 package ru.practicum.explore.api.admin;
 
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.CategoryDto;
 import ru.practicum.explore.commons.dto.NewCategoryDto;

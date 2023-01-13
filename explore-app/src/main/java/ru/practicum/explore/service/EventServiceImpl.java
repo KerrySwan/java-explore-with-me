@@ -21,12 +21,11 @@ import ru.practicum.explore.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -70,10 +69,10 @@ public class EventServiceImpl implements EventService {
                                                 criteriaBuilder.greaterThan(root.get("participantLimit"), root.get("confirmedRequests"))
                                         )) : root.isNotNull(),
                                 text == null ? root.isNotNull() :
-                                criteriaBuilder.or(
-                                        criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text.toLowerCase() + "%"),
-                                        criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text.toLowerCase() + "%")
-                                )),
+                                        criteriaBuilder.or(
+                                                criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text.toLowerCase() + "%"),
+                                                criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text.toLowerCase() + "%")
+                                        )),
                 PageRequest.of(from / size, size, sorting));
         return events.stream()
                 .map(EventMapper::toShortDto)
@@ -173,7 +172,7 @@ public class EventServiceImpl implements EventService {
         Request r;
         try {
             eventRepository.getByIdAndUserId(eventId, userId);
-        }  catch (EntityNotFoundException ex) {
+        } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId));
         }
         try {
@@ -197,7 +196,7 @@ public class EventServiceImpl implements EventService {
         Request r;
         try {
             eventRepository.getByIdAndUserId(eventId, userId);
-        }  catch (EntityNotFoundException ex) {
+        } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId));
         }
         try {
@@ -242,7 +241,7 @@ public class EventServiceImpl implements EventService {
                                                 criteriaBuilder.lessThan(root.get("eventDate"), end)
                                         ) : criteriaBuilder.lessThan(root.get("eventDate"), LocalDateTime.now())
                         ),
-                PageRequest.of(from/size, size, Sort.by(Sort.Direction.ASC, "id")));
+                PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id")));
         return events.stream()
                 .map(EventMapper::toFullDto)
                 .collect(Collectors.toList());

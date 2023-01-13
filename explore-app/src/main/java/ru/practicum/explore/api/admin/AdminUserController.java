@@ -9,7 +9,6 @@ import ru.practicum.explore.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController

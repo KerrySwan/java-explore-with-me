@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
@@ -42,25 +42,25 @@ public class RequestServiceImpl implements RequestService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public ParticipationRequestDto addParticipationRequest(long userId, long eventId) {
-        User u;
-        Event e;
+        User user;
+        Event event;
         try {
-            u = userRepository.getById(userId);
+            user = userRepository.getById(userId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(
                     String.format("userId = %d не найден", userId)
             );
         }
         try {
-            e = eventRepository.getById(eventId);
+            event = eventRepository.getById(eventId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(
                     String.format("Связка eventId = %d и userId = %d не найдена", eventId, userId)
             );
         }
         Request r = Request.builder()
-                .user(u)
-                .event(e)
+                .user(user)
+                .event(event)
                 .createdOn(LocalDateTime.now())
                 .status(new RequestStatus(1L, "PENDING"))
                 .build();
@@ -70,20 +70,20 @@ public class RequestServiceImpl implements RequestService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public ParticipationRequestDto cancelRequestByUser(long userId, long requestId) {
-        Request r;
+        Request request;
         try {
-            r = requestRepository.getByIdAndUserId(requestId, userId);
+            request = requestRepository.getByIdAndUserId(requestId, userId);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(
                     String.format("Связка requestId = %d и userId = %d не найдена", requestId, userId)
             );
         }
-        if (r.getStatus().getId() == 2L) {
-            Event e = eventRepository.getById(r.getEvent().getId());
+        if (request.getStatus().getId() == 2L) {
+            Event e = eventRepository.getById(request.getEvent().getId());
             e.setConfirmedRequests(e.getConfirmedRequests() - 1L);
             eventRepository.save(e);
         }
-        r.setStatus(new RequestStatus(4L, "CANCELED"));
-        return RequestMapper.toDto(requestRepository.save(r));
+        request.setStatus(new RequestStatus(4L, "CANCELED"));
+        return RequestMapper.toDto(requestRepository.save(request));
     }
 }

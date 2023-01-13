@@ -3,7 +3,6 @@ package ru.practicum.explore.commons.mapper;
 import ru.practicum.explore.commons.dto.CompilationDto;
 import ru.practicum.explore.commons.dto.NewCompilationDto;
 import ru.practicum.explore.commons.model.Compilation;
-import ru.practicum.explore.commons.model.Event;
 
 import java.util.stream.Collectors;
 

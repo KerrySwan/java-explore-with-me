@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
