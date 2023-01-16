@@ -9,6 +9,7 @@ import ru.practicum.explore.commons.dto.CommentDto;
 import ru.practicum.explore.commons.dto.NewCommentDto;
 import ru.practicum.explore.commons.mapper.CommentMapper;
 import ru.practicum.explore.commons.model.Comment;
+import ru.practicum.explore.commons.model.Event;
 import ru.practicum.explore.repository.CommentRepository;
 import ru.practicum.explore.repository.EventRepository;
 import ru.practicum.explore.repository.UserRepository;
@@ -61,15 +62,13 @@ public class CommentServiceImpl implements CommentService {
                                  NewCommentDto commentDto) {
         Comment comment = CommentMapper.toModel(commentDto);
         comment.setDate(LocalDateTime.now());
-        try {
-            comment.setEvent(
-                    eventRepository.getById(eventId)
-            );
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(
-                    String.format("События eventId = %d не cуществует", eventId)
-            );
-        }
+        Event event = eventRepository.getByIdAndStateId(eventId, 2L)
+                .orElseThrow( () ->
+                    new EntityNotFoundException(
+                            String.format("События eventId = %d не cуществует", eventId)
+                    )
+                );
+        comment.setEvent(event);
         try {
             comment.setUser(
                     userRepository.getById(userId)

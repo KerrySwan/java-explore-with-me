@@ -26,7 +26,7 @@ public class UserCommentController {
     @GetMapping(path = "{commentId}")
     public CommentDto getComment(@PathVariable long eventId,
                                  @PathVariable long commentId) {
-        return commentService.getComment(eventId, commentId);
+        return commentService.getComment(commentId, eventId);
     }
 
     @PostMapping
@@ -40,7 +40,7 @@ public class UserCommentController {
     public String deleteComment(@PathVariable long userId,
                                 @PathVariable long eventId,
                                 @PathVariable long commentId) {
-        commentService.deleteComment(userId, eventId, commentId);
+        commentService.deleteComment(commentId, userId, eventId);
         return "Комментарий удален";
     }
 
