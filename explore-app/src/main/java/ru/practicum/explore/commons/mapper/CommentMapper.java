@@ -6,7 +6,7 @@ import ru.practicum.explore.commons.model.Comment;
 
 public class CommentMapper {
 
-    public static Comment toModel(CommentDto dto){
+    public static Comment toModel(CommentDto dto) {
         return Comment.builder()
                 .id(dto.getId())
                 .text(dto.getText())
@@ -16,13 +16,13 @@ public class CommentMapper {
                 .build();
     }
 
-    public static Comment toModel(NewCommentDto dto){
+    public static Comment toModel(NewCommentDto dto) {
         return Comment.builder()
                 .text(dto.getText())
                 .build();
     }
 
-    public static CommentDto toDto(Comment model){
+    public static CommentDto toDto(Comment model) {
         return CommentDto.builder()
                 .id(model.getId())
                 .text(model.getText())

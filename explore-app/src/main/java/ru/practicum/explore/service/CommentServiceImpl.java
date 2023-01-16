@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     CommentRepository commentRepository;
     EventRepository eventRepository;
@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public List<CommentDto> getComments(long eventId,
                                         int from,
-                                        int size){
+                                        int size) {
         try {
             eventRepository.getById(eventId);
         } catch (EntityNotFoundException e) {
@@ -45,20 +45,20 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public CommentDto getComment(long commentId,
-                          long eventId){
+                                 long eventId) {
         Comment comment = commentRepository.getByIdAndEventId(commentId, eventId)
-                .orElseThrow( () ->
-                    new EntityNotFoundException(
-                            String.format("Связка commentId = %d и eventId = %d не найдена", commentId, eventId)
-                    )
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                String.format("Связка commentId = %d и eventId = %d не найдена", commentId, eventId)
+                        )
                 );
         return CommentMapper.toDto(comment);
     }
 
     @Override
     public CommentDto addComment(long userId,
-                          long eventId,
-                          NewCommentDto commentDto){
+                                 long eventId,
+                                 NewCommentDto commentDto) {
         Comment comment = CommentMapper.toModel(commentDto);
         comment.setDate(LocalDateTime.now());
         try {
@@ -86,27 +86,27 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public void deleteComment(long commentId,
-                       long userId,
-                       long eventId){
+                              long userId,
+                              long eventId) {
         commentRepository.getByIdAndEventIdAndUserId(commentId, eventId, userId)
-                .orElseThrow(()->
-                    new EntityNotFoundException(
-                            String.format("Связки commentId = %d, eventId = %d и userId = %d не существует", commentId, eventId, userId)
-                    )
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                String.format("Связки commentId = %d, eventId = %d и userId = %d не существует", commentId, eventId, userId)
+                        )
                 );
         commentRepository.deleteById(commentId);
     }
 
     @Override
     public CommentDto updateComment(long userId,
-                            long eventId,
-                            long commentId,
-                            NewCommentDto commentDto){
+                                    long eventId,
+                                    long commentId,
+                                    NewCommentDto commentDto) {
         Comment comment = commentRepository.getByIdAndEventIdAndUserId(commentId, eventId, userId)
-                .orElseThrow( ()->
-                    new EntityNotFoundException(
-                            String.format("Связки commentId = %d, eventId = %d и userId = %d не существует", commentId, eventId, userId)
-                    )
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                String.format("Связки commentId = %d, eventId = %d и userId = %d не существует", commentId, eventId, userId)
+                        )
                 );
         comment.setText(commentDto.getText());
         return CommentMapper.toDto(
@@ -115,7 +115,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void deleteCommentByAdmin(long commentId){
+    public void deleteCommentByAdmin(long commentId) {
         try {
             Comment comment = commentRepository.getById(commentId);
             commentRepository.delete(comment);
@@ -128,7 +128,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public CommentDto updateCommentByAdmin(long commentId,
-                                    NewCommentDto commentDto){
+                                           NewCommentDto commentDto) {
         try {
             Comment comment = commentRepository.getById(commentId);
             comment.setText(commentDto.getText());

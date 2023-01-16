@@ -16,14 +16,14 @@ public class AdminCommentController {
     private final CommentService commentService;
 
     @DeleteMapping
-    public String deleteComment(@PathVariable long commentId){
+    public String deleteComment(@PathVariable long commentId) {
         commentService.deleteCommentByAdmin(commentId);
         return "Комментарий удален";
     }
 
     @PatchMapping
     public CommentDto updateComment(@PathVariable long commentId,
-                                    @Valid @RequestBody NewCommentDto commentDto){
+                                    @Valid @RequestBody NewCommentDto commentDto) {
         return commentService.updateCommentByAdmin(commentId, commentDto);
     }
 

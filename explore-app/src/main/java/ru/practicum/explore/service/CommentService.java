@@ -1,6 +1,5 @@
 package ru.practicum.explore.service;
 
-import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.commons.dto.CommentDto;
 import ru.practicum.explore.commons.dto.NewCommentDto;
 
