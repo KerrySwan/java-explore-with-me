@@ -1,0 +1,646 @@
+{
+  "info": {
+    "_postman_id": "bbc3f8ec-3c5f-4ea4-b2b1-48e5037c431f",
+    "name": "comments",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21207672"
+  },
+  "item": [
+    {
+      "name": "Get all Comments 1st event empty",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson).length(0)\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Not found 1st comment 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function(){\r",
+              "    pm.response.to.have.status(404);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add new comm",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(1);\r",
+              "    pm.expect(responseJson.text).to.eql(\"Man, this party stinks. I freacking hate these people\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Man, this party stinks. I freacking hate these people\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get 1st comment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(1);\r",
+              "    pm.expect(responseJson.text).to.eql(\"Man, this party stinks. I freacking hate these people\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update 1st comm",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(1);\r",
+              "    pm.expect(responseJson.text).to.eql(\"I heard them say we've reached Morrowind, I'm sure they'll let us go\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"I heard them say we've reached Morrowind, I'm sure they'll let us go\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get 1st comment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(1);\r",
+              "    pm.expect(responseJson.text).to.eql(\"I heard them say we've reached Morrowind, I'm sure they'll let us go\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add 2nd comment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(2);\r",
+              "    pm.expect(responseJson.text).to.eql(\"Rock and Stone!\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Rock and Stone!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all Comments 1st event",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson).length(2)\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin update 2st comm Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(2);\r",
+              "    pm.expect(responseJson.text).to.eql(\"I find my target, he's this guy. I throw a piece of china right in his mouth. Mission accomplished. I can now escape undetected\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"I find my target, he's this guy. I throw a piece of china right in his mouth. Mission accomplished. I can now escape undetected\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/admin/comments/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "admin",
+            "comments",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get 2nd comment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson.id).to.eql(2);\r",
+              "    pm.expect(responseJson.text).to.eql(\"I find my target, he's this guy. I throw a piece of china right in his mouth. Mission accomplished. I can now escape undetected\");\r",
+              "    pm.expect(responseJson.user.id).to.eql(1);\r",
+              "    pm.expect(responseJson.event.id).to.eql(1);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete 1st by not owner 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function(){\r",
+              "    pm.response.to.have.status(404);\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"I heard them say we've reached Morrowind, I'm sure they'll let us go\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/2/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "2",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all Comments 1st event confirm",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson).length(2)\r",
+              "    pm.expect(responseJson[0].text).to.eql(\"I heard them say we've reached Morrowind, I'm sure they'll let us go\");\r",
+              "    pm.expect(responseJson[1].text).to.eql(\"I find my target, he's this guy. I throw a piece of china right in his mouth. Mission accomplished. I can now escape undetected\");\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete 1st comment",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"I heard them say we've reached Morrowind, I'm sure they'll let us go\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin delete 2nd comment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/admin/comments/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "admin",
+            "comments",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all Comments 1st event empty",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments. All empty\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson).length(0)\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/1/events/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "1",
+            "events",
+            "1",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

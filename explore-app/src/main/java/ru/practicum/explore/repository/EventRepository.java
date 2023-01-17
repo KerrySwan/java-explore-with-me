@@ -10,6 +10,7 @@ import ru.practicum.explore.commons.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
@@ -38,4 +39,5 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     )
     public Page<Event> findAllByAdmin(List<Long> users, List<String> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable p);
 
+    public Optional<Event> getByIdAndStateId(long id, long stateId);
 }
