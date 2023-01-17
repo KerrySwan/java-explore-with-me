@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
@@ -31,6 +32,7 @@ public class RequestServiceImpl implements RequestService {
      * Private: Запросы на участие
      **/
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getRequestsByUserId(long userId) {
         return requestRepository.findAllByUserId(userId)
                 .stream()

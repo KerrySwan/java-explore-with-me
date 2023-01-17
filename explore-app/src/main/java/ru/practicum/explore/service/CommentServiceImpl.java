@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explore.commons.dto.CommentDto;
 import ru.practicum.explore.commons.dto.NewCommentDto;
 import ru.practicum.explore.commons.mapper.CommentMapper;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     CommentRepository commentRepository;
@@ -28,6 +30,7 @@ public class CommentServiceImpl implements CommentService {
     UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommentDto> getComments(long eventId,
                                         int from,
                                         int size) {
@@ -45,6 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CommentDto getComment(long commentId,
                                  long eventId) {
         Comment comment = commentRepository.getByIdAndEventId(commentId, eventId)
