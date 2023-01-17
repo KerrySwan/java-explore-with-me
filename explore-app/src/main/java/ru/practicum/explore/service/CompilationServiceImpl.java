@@ -19,14 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
 
+    @Transactional
     @Override
-    @Transactional(readOnly = true)
     public CompilationDto add(NewCompilationDto newCompilationsDto) {
         Compilation compilations = compilationRepository.save(CompilationMapper.toModel(newCompilationsDto));
         List<Event> events = eventRepository.findAllByEventIdIn(newCompilationsDto.getEvents());
@@ -35,7 +34,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
         return compilationRepository.findAllPinned(pinned, PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id")))
                 .stream()
@@ -43,8 +41,8 @@ public class CompilationServiceImpl implements CompilationService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
-    @Transactional(readOnly = true)
     public CompilationDto getCompilation(Long compId) {
         Compilation compilations = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException("Подборка  не найдена"));

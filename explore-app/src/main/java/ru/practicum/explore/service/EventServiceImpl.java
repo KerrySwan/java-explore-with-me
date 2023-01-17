@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -40,7 +39,6 @@ public class EventServiceImpl implements EventService {
      **/
 
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> findAllWithFiltration(String text, List<Long> categories, Boolean isPaid, String rangeStart, String rangeEnd, Boolean isAvailable, String sort, int from, int size) {
         Sort sorting;
         if (sort == null)
@@ -55,7 +53,7 @@ public class EventServiceImpl implements EventService {
         LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, JacksonConfiguration.dtf);
         Page<Event> events = eventRepository.findAll((root, query, criteriaBuilder) ->
                         criteriaBuilder.and(
-                                criteriaBuilder.equal(root.get("state"), new EventState(2L, "PUBLISHED")),
+                                criteriaBuilder.equal(root.get("state"), new EventState(2, "PUBLISHED")),
                                 categories == null ? root.isNotNull() : root.get("category").in(categories),
                                 isPaid == null ? root.isNotNull() : criteriaBuilder.equal(root.get("paid"), isPaid),
                                 (start != null && end != null) ?
@@ -81,7 +79,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public EventFullDto getByEventId(long eventId) {
         try {
             return EventMapper.toFullDto(eventRepository.getById(eventId));
@@ -96,7 +93,6 @@ public class EventServiceImpl implements EventService {
      * Private: События
      **/
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> getEventsByUser(long userId, int from, int size) {
         return eventRepository
                 .findAllByUserId(userId, PageRequest.of((from / size), size))
@@ -138,7 +134,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public EventFullDto getEventByUser(long userId, long eventId) {
         try {
             return EventMapper.toFullDto(
@@ -163,7 +158,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getRequestsByEventId(long userId, long eventId) {
         return requestRepository
                 .findAllByEventIdAndByEventUserId(eventId, userId)
@@ -224,7 +218,7 @@ public class EventServiceImpl implements EventService {
      **/
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<EventFullDto> findAllByAdmin(List<Long> users,
                                              List<String> states,
                                              List<Long> categories,
@@ -289,7 +283,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto publish(long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new InvalidIdException("Событие не найдено"));
-        event.setState(new EventState(2L, "PUBLISHED"));
+        event.setState(new EventState(2, "PUBLISHED"));
         event.setPublishedOn(LocalDateTime.now());
         return EventMapper.toFullDto(eventRepository.save(event));
     }
@@ -298,7 +292,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto reject(long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new InvalidIdException("Событие не найдено"));
-        event.setState(new EventState(3L, "CANCELED"));
+        event.setState(new EventState(3, "CANCELED"));
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 

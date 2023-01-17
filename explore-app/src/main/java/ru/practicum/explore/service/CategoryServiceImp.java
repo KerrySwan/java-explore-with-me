@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class CategoryServiceImp implements CategoryService {
 
     private CategoryRepository categoryRepository;
 
     @Override
+    @Transactional
     public CategoryDto add(NewCategoryDto categoriesDto) {
         try {
             Category categories = categoryRepository.save(CategoryMapper.toModel(categoriesDto));
@@ -35,6 +35,7 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto update(CategoryDto categoriesDto) {
         Category categories = categoryRepository.findById(categoriesDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
@@ -50,12 +51,12 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(long catId) {
         categoryRepository.deleteById(catId);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CategoryDto getCategory(long catId) {
         Category categories = categoryRepository.findById(catId)
                 .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
@@ -63,7 +64,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<CategoryDto> getAll(int from, int size) {
         return categoryRepository.findAll(PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id")))
                 .stream()

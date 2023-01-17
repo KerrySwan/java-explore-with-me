@@ -16,7 +16,7 @@ public class RequestStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     String name;
 
     @Override

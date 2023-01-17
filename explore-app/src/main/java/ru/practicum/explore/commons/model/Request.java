@@ -16,7 +16,7 @@ public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     @ManyToOne()
     @JoinColumn(
             name = "user_id",

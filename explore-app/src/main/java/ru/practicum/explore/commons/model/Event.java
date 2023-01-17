@@ -16,7 +16,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     String annotation;
     @ManyToOne()
     @JoinColumn(

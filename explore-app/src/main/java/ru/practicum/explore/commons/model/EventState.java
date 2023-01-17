@@ -15,7 +15,7 @@ public class EventState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     String name;
 
     public EventState(String name) {
